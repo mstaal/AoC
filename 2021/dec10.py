@@ -8,7 +8,7 @@ from utils import AoCHelper as helper
 
 
 def is_corrupt_after_removal(element):
-    return element.__contains__(">") or element.__contains__(")") or element.__contains__("]") or element.__contains__("}")
+    return any(element.__contains__(char) for char in [">", ")", "]", "}"])
 
 
 def remove_inner(element):
