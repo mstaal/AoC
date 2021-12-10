@@ -7,10 +7,6 @@ import statistics
 from utils import AoCHelper as helper
 
 
-def is_corrupt_after_removal(element):
-    return any(element.__contains__(char) for char in [">", ")", "]", "}"])
-
-
 def remove_inner(element):
     length = len(element)
     text = element.replace("<>", "").replace("()", "").replace("{}", "").replace("[]", "")
@@ -39,6 +35,7 @@ def autocomplete_points(elm):
 if __name__ == '__main__':
     content = [element for element in helper.splitFile("day10.txt", "\n")]
     removed = [remove_inner(element) for element in content]
+    is_corrupt_after_removal = lambda el: helper.contains_any(el, [">", ")", "]", "}"])
     corrupted = [el for el in removed if is_corrupt_after_removal(el)]
     exercise1 = sum([illegal_points(text) for text in corrupted])
     print(f"Result 1: {str(exercise1)}")

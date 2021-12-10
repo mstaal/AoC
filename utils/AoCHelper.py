@@ -97,6 +97,10 @@ def binaryParse(word, letter):
     return number
 
 
+def contains_any(element, condition_collection):
+    return any(element.__contains__(sub) for sub in condition_collection)
+
+
 def flatten(lst):
     return [item for sublist in lst for item in sublist]
 
