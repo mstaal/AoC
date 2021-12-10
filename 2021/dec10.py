@@ -1,7 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import statistics
 
 from utils import AoCHelper as helper
@@ -31,7 +27,6 @@ def autocomplete_points(elm):
     return calc
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     content = [element for element in helper.splitFile("day10.txt", "\n")]
     removed = [remove_inner(element) for element in content]
@@ -43,4 +38,3 @@ if __name__ == '__main__':
     incomplete = [el for el in removed if not is_corrupt_after_removal(el)]
     exercise2 = statistics.median([autocomplete_points(elm) for elm in incomplete])
     print(f"Result 2: {str(exercise2)}")
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
