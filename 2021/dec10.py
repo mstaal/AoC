@@ -13,7 +13,7 @@ def remove_inner(element):
 
 def illegal_points(text):
     calc = 0
-    points = {"[)": 3, "<)": 3, "{)": 3, "(]": 57, "{]": 57, "<]": 57, "[}": 1197, "<}": 1197, "(}": 1197, "(>": 25137, "[>": 25137, "{>": 25137}
+    points = {")": 3, "]": 57, "}": 1197, ">": 25137}
     for error, point in points.items():
         calc += text.count(error) * point
     return calc
