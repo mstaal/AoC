@@ -29,9 +29,7 @@ if __name__ == '__main__':
     content = [element.split("-") for element in helper.splitFile("day12.txt", "\n")]
     map = {x[0]: set(y[1] for y in content if x[0] == y[0]) for x in content}
     map.update({x[1]: map.get(x[1], set()).union(set(y[0] for y in content if x[1] == y[1])) for x in content})
-    for key, value in map.items():
-        map[key] = set(filter(lambda x: x != "start", value))
+    map = {k: set(filter(lambda x: x != "start", v)) for k, v in map.items()}
     map.pop("end")
     print(f"Result 1: {str(exercise(map, 2))}")
-
     print(f"Result 2: {str(exercise(map, 3))}")
