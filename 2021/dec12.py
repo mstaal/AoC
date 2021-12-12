@@ -4,7 +4,7 @@ from utils import AoCHelper as helper
 def generate_paths(map, wip, done, lower_case_limit):
     if len(wip) == 0:
         return done
-    next_memory = []
+    next_wip = []
     for v in wip:
         last = v[-1]
         if last == "end":
@@ -14,8 +14,8 @@ def generate_paths(map, wip, done, lower_case_limit):
             lower_case = [elm for elm in v + [next] if elm.islower()]
             counts = len([lower_case.count(elm) for elm in lower_case if lower_case.count(elm) > 1])
             if next.isupper() or counts < lower_case_limit:
-                next_memory.append(v + [next])
-    return generate_paths(map, next_memory, done, lower_case_limit)
+                next_wip.append(v + [next])
+    return generate_paths(map, next_wip, done, lower_case_limit)
 
 
 def exercise(map, lowercase_limit):
