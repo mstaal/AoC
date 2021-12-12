@@ -1,26 +1,26 @@
 from utils import AoCHelper as helper
 
 
-def generate_paths(map, memory, lower_case_limit):
-    if len([elm[-1] for elm in memory if elm[-1] != "end"]) == 0:
-        return memory
+def generate_paths(map, wip, done, lower_case_limit):
+    if len(wip) == 0:
+        return done
     next_memory = []
-    for v in memory:
+    for v in wip:
         last = v[-1]
         if last == "end":
-            next_memory.append(v)
+            done.append(v)
         nexts = sorted(map.get(last, set()))
         for next in nexts:
             lower_case = [elm for elm in v + [next] if elm.islower()]
             counts = len([lower_case.count(elm) for elm in lower_case if lower_case.count(elm) > 1])
             if next.isupper() or counts < lower_case_limit:
                 next_memory.append(v + [next])
-    return generate_paths(map, next_memory, lower_case_limit)
+    return generate_paths(map, next_memory, done, lower_case_limit)
 
 
 def exercise(map, lowercase_limit):
     start_candidates = [[x] for idx, x in enumerate(sorted(map.get("start", set())))]
-    all_paths = generate_paths(map, start_candidates, lowercase_limit)
+    all_paths = generate_paths(map, start_candidates, [], lowercase_limit)
     result = len(all_paths)
     return result
 
