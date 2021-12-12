@@ -37,4 +37,4 @@ if __name__ == '__main__':
     map = get_content_map(content)
     print(f"Result 1: {str(exercise(map, 2))}")
 
-    print(f"Result 1: {str(exercise(map, 3))}")
+    print(f"Result 2: {str(exercise(map, 3))}")
