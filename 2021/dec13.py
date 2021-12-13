@@ -8,17 +8,9 @@ def exercise(coordinates, folds):
         temp = set()
         for x, y in coordinates:
             if c == "y":
-                if y > size:
-                    new_y = size - abs(y-size)
-                    temp.add((x, new_y))
-                else:
-                    temp.add((x, y))
+                temp.add((x, size - abs(y - size) if y > size else y))
             if c == "x":
-                if x > size:
-                    new_x = size - abs(x-size)
-                    temp.add((new_x, y))
-                else:
-                    temp.add((x, y))
+                temp.add((size - abs(x - size) if x > size else x, y))
         coordinates = temp
     return coordinates
 
