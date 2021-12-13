@@ -8,9 +8,9 @@ def exercise(coordinates, folds):
         temp = set()
         for x, y in copy:
             if c == "y":
-                temp.add((x, size - abs(y - size) if y > size else y))
+                temp.add((x, size - abs(y - size)))
             if c == "x":
-                temp.add((size - abs(x - size) if x > size else x, y))
+                temp.add((size - abs(x - size), y))
         copy = temp
     return copy
 
