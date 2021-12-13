@@ -16,11 +16,6 @@ def exercise(coordinates, folds):
     return copy
 
 
-def plot(coordinates, folds):
-    points = [np.array(p).dot([[1, 0], [0, -1]]) for p in exercise(coordinates, folds)]
-    tp.plot([x for x, y in points], [y for x, y in points], 10, 60)
-
-
 if __name__ == '__main__':
     coordinates_content, fold_content = [element for element in helper.splitFile("day13.txt", "\n\n")]
     coordinates = set((int(elm.split(",")[0]), int(elm.split(",")[1])) for elm in coordinates_content.split("\n"))
@@ -28,4 +23,5 @@ if __name__ == '__main__':
 
     print(f"Result 1: {str(len(exercise(coordinates, folds[0:1])))}")
     print("Result 2:")
-    plot(coordinates, folds)
+    points_to_plot = [helper.reflect_points_x(p, True) for p in exercise(coordinates, folds)]
+    tp.plot([x for x, y in points_to_plot], [y for x, y in points_to_plot], 10, 60)

@@ -24,8 +24,29 @@ def to_2d_dict(array):
 
 
 def to_3d_dict(array):
-    return {(idx, idy, idz): array[idx][idy] for idx in range(0, len(array)) for idy in range(0, len(array[0])) for idz
-            in range(0, len(array[0][0]))}
+    return {(idx, idy, idz): array[idx][idy][idz] for idx in range(0, len(array)) for idy in range(0, len(array[0]))
+            for idz in range(0, len(array[0][0]))}
+
+
+def rot_points_90(points, as_tuple=False):
+    result = np.array(points).dot([[0, 1], [-1, 0]])
+    if as_tuple:
+        return tuple(result)
+    return result
+
+
+def reflect_points_x(points, as_tuple=False):
+    result = np.array(points).dot([[1, 0], [0, -1]])
+    if as_tuple:
+        return tuple(result)
+    return result
+
+
+def reflect_points_y(points, as_tuple=False):
+    result = np.array(points).dot([[-1, 0], [0, 1]])
+    if as_tuple:
+        return tuple(result)
+    return result
 
 
 def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, characters_to_skip=[], radius=1):
