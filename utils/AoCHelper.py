@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import copy as cc
 from itertools import permutations, combinations, chain, product
-from utils.GlobalVariables import all_directions
+from utils.GlobalVariables import all_directions, all_directions_3d
 
 
 def prod(ints):
@@ -71,6 +71,18 @@ def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, cha
                 adjacent_material[(i + x, j + y)] = coll[i + x][j + y]
         elif not ignore_none:
             adjacent_material[(i + x, j + y)] = None
+    return adjacent_material
+
+
+def get_neighbours_3d(coll, i, j, k, directions=all_directions_3d, ignore_none=False, characters_to_skip=[], radius=1):
+    adjacent_material = {}
+    for x, y, z in [(x * radius, y * radius, z * radius) for x, y, z in directions]:
+        if 0 <= i + x < len(coll) and 0 <= j + y < len(coll[0]) and 0 <= k + z < len(coll[0][0]):
+            element = coll[i + x][j + y][k + z]
+            if element not in characters_to_skip:
+                adjacent_material[(i + x, j + y, k + z)] = coll[i + x][j + y][k + z]
+        elif not ignore_none:
+            adjacent_material[(i + x, j + y, k + z)] = None
     return adjacent_material
 
 
