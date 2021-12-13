@@ -1,5 +1,4 @@
 from utils import AoCHelper as helper
-import numpy as np
 import terminalplot as tp
 
 

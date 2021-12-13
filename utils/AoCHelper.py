@@ -1,12 +1,7 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import math
-
 import pandas as pd
 from functools import reduce
 import numpy as np
+import matplotlib.pyplot as plt
 import copy as cc
 from itertools import permutations, combinations, chain, product
 from utils.GlobalVariables import all_directions
@@ -51,6 +46,20 @@ def reflect_points_x(points, as_tuple=False):
 
 def reflect_points_y(points, as_tuple=False):
     return linear_2d_operation(points, [[-1, 0], [0, 1]], as_tuple)
+
+
+def plot_data(x, y, z=[], w=[]):
+    fig = plt.figure()
+    if len(z) > 0:
+        ax = fig.add_subplot(111, projection='3d')
+        if len(w) > 0:
+            img = ax.scatter(x, y, z, c=w, cmap=plt.hot())
+            fig.colorbar(img)
+        else:
+            ax.scatter(x, y, z)
+    else:
+        plt.scatter(x, y)
+    plt.show()
 
 
 def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, characters_to_skip=[], radius=1):
