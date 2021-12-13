@@ -28,32 +28,29 @@ def to_3d_dict(array):
             for idz in range(0, len(array[0][0]))}
 
 
+def linear_2d_operation(points, matrix, as_tuple):
+    if isinstance(points, tuple) or (isinstance(points, list) and len(points) == 2 and all(isinstance(s, int) for s in points)):
+        result = np.array(points).dot(matrix)
+        if as_tuple:
+            return tuple(result)
+        return result
+    return [linear_2d_operation(element, matrix, as_tuple) for element in points]
+
+
 def rot_points_90(points, as_tuple=False):
-    result = np.array(points).dot([[0, 1], [-1, 0]])
-    if as_tuple:
-        return tuple(result)
-    return result
+    return linear_2d_operation(points, [[0, 1], [-1, 0]], as_tuple)
 
 
 def rot_points_90_clockwise(points, as_tuple=False):
-    result = np.array(points).dot([[0, -1], [1, 0]])
-    if as_tuple:
-        return tuple(result)
-    return result
+    return linear_2d_operation(points, [[0, -1], [1, 0]], as_tuple)
 
 
 def reflect_points_x(points, as_tuple=False):
-    result = np.array(points).dot([[1, 0], [0, -1]])
-    if as_tuple:
-        return tuple(result)
-    return result
+    return linear_2d_operation(points, [[1, 0], [0, -1]], as_tuple)
 
 
 def reflect_points_y(points, as_tuple=False):
-    result = np.array(points).dot([[-1, 0], [0, 1]])
-    if as_tuple:
-        return tuple(result)
-    return result
+    return linear_2d_operation(points, [[-1, 0], [0, 1]], as_tuple)
 
 
 def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, characters_to_skip=[], radius=1):
