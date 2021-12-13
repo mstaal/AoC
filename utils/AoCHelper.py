@@ -35,6 +35,13 @@ def rot_points_90(points, as_tuple=False):
     return result
 
 
+def rot_points_90_clockwise(points, as_tuple=False):
+    result = np.array(points).dot([[0, -1], [1, 0]])
+    if as_tuple:
+        return tuple(result)
+    return result
+
+
 def reflect_points_x(points, as_tuple=False):
     result = np.array(points).dot([[1, 0], [0, -1]])
     if as_tuple:
