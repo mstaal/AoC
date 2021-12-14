@@ -21,7 +21,6 @@ def exercise(polymer, insertion_rules, counter):
 if __name__ == '__main__':
     polymer, lines_raw = [element for element in helper.splitFile("day14.txt", "\n\n")]
     insertion_rules = {element.split(" -> ")[0]: element.split(" -> ")[1] for element in lines_raw.split("\n")}
-    replace_rules = {k: k[0] + v + k[1] for k, v in insertion_rules.items()}
 
     print(f"Result 1: {str(exercise(polymer, insertion_rules, 10))}")
     print(f"Result 2: {str(exercise(polymer, insertion_rules, 40))}")
