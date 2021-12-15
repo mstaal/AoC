@@ -1,15 +1,3 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import sys
-
-import pandas as pd
-from functools import reduce
-import numpy as np
-import copy as cc
-from itertools import permutations, combinations, chain, product
-import sys
 from heapq import heappush, heappop
 from queue import PriorityQueue
 
