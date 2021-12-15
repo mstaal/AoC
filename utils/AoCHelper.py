@@ -1,8 +1,8 @@
+import itertools
 import numpy as np
 import pandas as pd
 from functools import reduce
 import matplotlib.pyplot as plt
-from itertools import permutations, combinations, chain, product
 from utils.GlobalVariables import all_directions, all_directions_3d
 
 
@@ -89,8 +89,7 @@ def adjac_helper(ele, sub=[]):
     if not ele:
         yield sub
     else:
-        yield from [idx for j in range(ele[0] - 1, ele[0] + 2)
-                    for idx in adjac_helper(ele[1:], sub + [j])]
+        yield from [idx for j in range(ele[0] - 1, ele[0] + 2) for idx in adjac_helper(ele[1:], sub + [j])]
 
 
 def adjacent(element):
@@ -154,6 +153,14 @@ def reverse_dict(dictionary):
     return {value: key for key, value in dictionary.items()}
 
 
+def permutations(element, length=None):
+    return itertools.permutations(element, length if length is not None else len(element))
+
+
+def combinations(element, repeat=None):
+    return [x for x in itertools.product(element, repeat=repeat if repeat is not None else len(element))]
+
+
 def baseToBinary(number, base=16):
     return bin(int(str(number), base))[2:]
 
@@ -164,10 +171,6 @@ def baseToHex(number, base=2):
 
 def baseToBase10(number, base=2):
     return int(str(number), base)
-
-
-def combi(collection, repeat):
-    return [list(x) for x in product(collection, repeat=repeat)]
 
 
 def gcdExtended(a, b):

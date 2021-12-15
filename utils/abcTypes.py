@@ -132,45 +132,16 @@ class LinkedList:
         raise Exception("Node with data '%s' not found" % target_node)
 
 
-# https://stackabuse.com/dijkstras-algorithm-in-python/
-# https://stackoverflow.com/questions/70191460/dijkstras-algorithm-code-to-store-the-vertices-contained-in-each-shortest-path
-class DijkGraph:
-    def __init__(self, num_of_vertices):
-        self.v = num_of_vertices
-        self.edges = {}
-        self.visited = set()
-
-    def add_edge(self, u, v, weight, weight_opposite=None):
-        self.edges[(u, v)] = weight
-        self.edges[(v, u)] = weight_opposite if weight_opposite is not None else weight
-
-    def dijkstra(self, start_vertex):
-        dijk = {start_vertex: 0}
-
-        pq = PriorityQueue()
-        pq.put((0, start_vertex))
-
-        while not pq.empty():
-            (dist, current_vertex) = pq.get()
-            self.visited.add(current_vertex)
-
-            for neighbor in range(self.v):
-                if self.edges.get((current_vertex, neighbor), -1) != -1:
-                    distance = self.edges.get((current_vertex, neighbor), -1)
-                    if neighbor not in self.visited:
-                        old_cost = dijk.get(neighbor, float('inf'))
-                        new_cost = dijk.get(current_vertex, float('inf')) + distance
-                        if new_cost < old_cost:
-                            pq.put((new_cost, neighbor))
-                            dijk[neighbor] = new_cost
-        return dijk
-
-
 # https://gist.github.com/m00nlight/245d917cb030c515c513
 class Dijkstra:
     def __init__(self, adjacents):
         self.adj = adjacents
-        self.n = len(adjacents)
+
+    def add_adjacency(self, u, v, weight, weight_opposite=None):
+        self.adj[u] = self.adj.get(u, {})
+        self.adj[v] = self.adj.get(v, {})
+        self.adj[u][v] = weight
+        self.adj[v][u] = weight_opposite if weight_opposite is not None else weight
 
     def dijkstra(self, start):
         dis, vis, hq = {}, {}, []

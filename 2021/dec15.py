@@ -29,7 +29,7 @@ if __name__ == '__main__':
     content = [[int(elm) for elm in element] for element in helper.splitFile("day15.txt", "\n")]
     print(f"Result 1: {str(exercise(content))}")
 
-    rotated = np.rot90(np.rot90(np.rot90(np.array(content)))).tolist()
+    rotated = np.rot90(np.array(content), k=3).tolist()
     with_sides = np.rot90(rotated + add(rotated) + add(add(rotated)) + add(add(add(rotated))) + add(add(add(add(rotated))))).tolist()
     with_all = np.array(with_sides + add(with_sides) + add(add(with_sides)) + add(add(add(with_sides))) + add(add(add(add(with_sides)))))
     print(f"Result 2: {str(exercise(with_all))}")
