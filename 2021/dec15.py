@@ -1,23 +1,21 @@
 from utils import AoCHelper as helper
 from utils.GlobalVariables import cardinal_directions
-from utils.abcTypes import Graph
+from utils.abcTypes import Dijkstra
 
 
 def exercise1(content):
-    graph = Graph(len(content)*len(content))
-    map = {}
-    count = 0
-    for idx, elm_x in enumerate(content):
-        for idy, elm_y in enumerate(elm_x):
-            map[(idx, idy)] = count
-            count += 1
+    dijk_graph = {}
     for idx, elm_x in enumerate(content):
         for idy, elm_y in enumerate(elm_x):
             adjacent = helper.get_neighbours(content, idx, idy, cardinal_directions, True)
             for adj, value in adjacent.items():
-                graph.add_edge(map[(idx, idy)], map[adj], value, elm_y)
-    path_length = graph.dijkstra(0)
-    result = path_length[len(content)*len(content)-1]
+                dijk_graph[(idx, idy)] = dijk_graph.get((idx, idy), {})
+                dijk_graph[adj] = dijk_graph.get(adj, {})
+                dijk_graph[(idx, idy)][adj] = value
+                dijk_graph[adj][(idx, idy)] = elm_y
+    dijk = Dijkstra(dijk_graph)
+    path_length = dijk.dijkstra((0, 0))
+    result = path_length[(len(content)-1, len(content)-1)]
     return result
 
 

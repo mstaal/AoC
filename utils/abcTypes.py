@@ -9,6 +9,8 @@ from functools import reduce
 import numpy as np
 import copy as cc
 from itertools import permutations, combinations, chain, product
+import sys
+from heapq import heappush, heappop
 from queue import PriorityQueue
 
 # https://code.activestate.com/recipes/384122/
@@ -144,34 +146,61 @@ class LinkedList:
 
 # https://stackabuse.com/dijkstras-algorithm-in-python/
 # https://stackoverflow.com/questions/70191460/dijkstras-algorithm-code-to-store-the-vertices-contained-in-each-shortest-path
-class Graph:
+class DijkGraph:
     def __init__(self, num_of_vertices):
         self.v = num_of_vertices
-        self.edges = [[-1 for i in range(num_of_vertices)] for j in range(num_of_vertices)]
-        self.visited = []
+        self.edges = {}
+        self.visited = set()
 
     def add_edge(self, u, v, weight, weight_opposite=None):
-        self.edges[u][v] = weight
-        self.edges[v][u] = weight_opposite if weight_opposite is not None else weight
+        self.edges[(u, v)] = weight
+        self.edges[(v, u)] = weight_opposite if weight_opposite is not None else weight
 
     def dijkstra(self, start_vertex):
-        dijk = {v: float('inf') for v in range(self.v)}
-        dijk[start_vertex] = 0
+        dijk = {start_vertex: 0}
 
         pq = PriorityQueue()
         pq.put((0, start_vertex))
 
         while not pq.empty():
             (dist, current_vertex) = pq.get()
-            self.visited.append(current_vertex)
+            self.visited.add(current_vertex)
 
             for neighbor in range(self.v):
-                if self.edges[current_vertex][neighbor] != -1:
-                    distance = self.edges[current_vertex][neighbor]
+                if self.edges.get((current_vertex, neighbor), -1) != -1:
+                    distance = self.edges.get((current_vertex, neighbor), -1)
                     if neighbor not in self.visited:
-                        old_cost = dijk[neighbor]
-                        new_cost = dijk[current_vertex] + distance
+                        old_cost = dijk.get(neighbor, float('inf'))
+                        new_cost = dijk.get(current_vertex, float('inf')) + distance
                         if new_cost < old_cost:
                             pq.put((new_cost, neighbor))
                             dijk[neighbor] = new_cost
         return dijk
+
+
+# https://gist.github.com/m00nlight/245d917cb030c515c513
+class Dijkstra:
+    def __init__(self, adjacents):
+        self.adj = adjacents
+        self.n = len(adjacents)
+
+    def dijkstra(self, start):
+        dis, vis, hq = {}, {}, []
+
+        for node in self.adj.keys():
+            dis[node] = float('inf')
+            vis[node] = False
+
+        dis[start], vis[start] = 0, True
+        heappush(hq, (0, start))
+
+        while hq:
+            (d, node) = heappop(hq)
+            vis[node] = True
+
+            for n, weight in self.adj[node].items():
+                if (not vis[n]) and (d + weight < dis[n]):
+                    dis[n] = d + weight
+                    heappush(hq, (dis[n], n))
+
+        return dis
