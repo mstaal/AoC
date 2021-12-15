@@ -1,9 +1,11 @@
+import numpy as np
+
 from utils import AoCHelper as helper
 from utils.GlobalVariables import cardinal_directions
 from utils.abcTypes import Dijkstra
 
 
-def exercise1(content):
+def exercise(content):
     dijk_graph = {}
     for idx, elm_x in enumerate(content):
         for idy, elm_y in enumerate(elm_x):
@@ -19,8 +21,15 @@ def exercise1(content):
     return result
 
 
+def add(content):
+    return [[elm + 1 if elm < 9 else 1 for elm in element] for element in content]
+
+
 if __name__ == '__main__':
     content = [[int(elm) for elm in element] for element in helper.splitFile("day15.txt", "\n")]
+    print(f"Result 1: {str(exercise(content))}")
 
-    print(f"Result 1: {str(exercise1(content))}")
-    print(f"Result 2: ")
+    rotated = np.rot90(np.rot90(np.rot90(np.array(content)))).tolist()
+    with_sides = np.rot90(rotated + add(rotated) + add(add(rotated)) + add(add(add(rotated))) + add(add(add(add(rotated))))).tolist()
+    with_all = np.array(with_sides + add(with_sides) + add(add(with_sides)) + add(add(add(with_sides))) + add(add(add(add(with_sides)))))
+    print(f"Result 2: {str(exercise(with_all))}")
