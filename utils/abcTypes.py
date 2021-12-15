@@ -2,11 +2,14 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import sys
+
 import pandas as pd
 from functools import reduce
 import numpy as np
 import copy as cc
 from itertools import permutations, combinations, chain, product
+from queue import PriorityQueue
 
 # https://code.activestate.com/recipes/384122/
 # http://tomerfiliba.com/blog/Infix-Operators/
@@ -137,3 +140,38 @@ class LinkedList:
             previous_node = node
 
         raise Exception("Node with data '%s' not found" % target_node)
+
+
+# https://stackabuse.com/dijkstras-algorithm-in-python/
+# https://stackoverflow.com/questions/70191460/dijkstras-algorithm-code-to-store-the-vertices-contained-in-each-shortest-path
+class Graph:
+    def __init__(self, num_of_vertices):
+        self.v = num_of_vertices
+        self.edges = [[-1 for i in range(num_of_vertices)] for j in range(num_of_vertices)]
+        self.visited = []
+
+    def add_edge(self, u, v, weight, weight_opposite=None):
+        self.edges[u][v] = weight
+        self.edges[v][u] = weight_opposite if weight_opposite is not None else weight
+
+    def dijkstra(self, start_vertex):
+        dijk = {v: float('inf') for v in range(self.v)}
+        dijk[start_vertex] = 0
+
+        pq = PriorityQueue()
+        pq.put((0, start_vertex))
+
+        while not pq.empty():
+            (dist, current_vertex) = pq.get()
+            self.visited.append(current_vertex)
+
+            for neighbor in range(self.v):
+                if self.edges[current_vertex][neighbor] != -1:
+                    distance = self.edges[current_vertex][neighbor]
+                    if neighbor not in self.visited:
+                        old_cost = dijk[neighbor]
+                        new_cost = dijk[current_vertex] + distance
+                        if new_cost < old_cost:
+                            pq.put((new_cost, neighbor))
+                            dijk[neighbor] = new_cost
+        return dijk

@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from functools import reduce
 import matplotlib.pyplot as plt
-import copy as cc
 from itertools import permutations, combinations, chain, product
 from utils.GlobalVariables import all_directions, all_directions_3d
 
