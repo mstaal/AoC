@@ -7,7 +7,7 @@ import time
 from collections import Counter, deque
 
 import pandas as pd
-import AoCHelper as helper
+from utils import AoCHelper as helper
 import numpy as np
 import sympy
 import itertools

@@ -1,17 +1,4 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from collections import Counter
-
-import pandas as pd
-import AoCHelper as helper
-import numpy as np
-import sympy
-import itertools
-import re
-import copy as cc
-from itertools import permutations, combinations, chain, product
+from utils import AoCHelper as helper
 
 signLambda = lambda letter: 1 if letter == "R" else -1
 

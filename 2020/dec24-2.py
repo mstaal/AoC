@@ -1,25 +1,6 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import math
-import queue
-import time
-from collections import Counter, deque
-
-import pandas as pd
-import AoCHelper as helper
-import abcTypes as types
-import numpy as np
-import sympy
-import itertools
-import hexutil as hex
 import re
-import copy as cc
-from functools import reduce
-from itertools import permutations, combinations, chain, product
-import matplotlib.pyplot as plt
-from matplotlib.patches import RegularPolygon
+
+from utils import AoCHelper as helper
 
 directions = {
     'e': (2, 0),

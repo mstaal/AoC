@@ -6,7 +6,7 @@ import time
 from collections import Counter
 
 import pandas as pd
-import AoCHelper as helper
+from utils import AoCHelper as helper
 import numpy as np
 import sympy
 import itertools

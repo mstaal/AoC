@@ -1,22 +1,6 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import queue
 import time
-from collections import Counter, deque
-
-import pandas as pd
-import AoCHelper as helper
-import abcTypes as types
 from abcTypes import LinkedList
-import numpy as np
-import sympy
-import itertools
-import re
-import copy as cc
-from functools import reduce
-from itertools import permutations, combinations, chain, product
+
 
 def getNext(current, game):
     return current.next if current.next is not None else game["content"].head

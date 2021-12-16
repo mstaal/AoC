@@ -1,15 +1,5 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from collections import Counter
-
-import pandas as pd
-import AoCHelper as helper
-import numpy as np
-import sympy
-import re
-from itertools import permutations
+from utils import AoCHelper as helper
 
 
 def calculateFirst(content, sum=0, index=0, executed=[]):
