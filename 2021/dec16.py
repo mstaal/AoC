@@ -89,7 +89,7 @@ class Less(Operator):
         super().__init__(packet_version, type_id, length_type, operator_val, tail)
 
     def get_value(self):
-        return 0 if self.value[0].get_value() < self.value[1].get_value() else 1
+        return 1 if self.value[0].get_value() < self.value[1].get_value() else 0
 
 
 class Equal(Operator):
@@ -168,5 +168,7 @@ if __name__ == '__main__':
     binary = ''.join([hex_to_bin(char) for char in content])
     packet = generate_packet(binary)
     summ = packet.get_version_sum()
-    vall = packet.get_value()
     print(f"Result 1: {str(summ)}")
+
+    vall = packet.get_value()
+    print(f"Result 2: {str(vall)}")
