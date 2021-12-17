@@ -16,7 +16,7 @@ class Literal(Packet):
         self.tail = tail
 
     def __repr__(self):
-        return f"Type: {self.type_id}"
+        return f"(Type: {self.type_id}, Version: {self.packet_version}, Value: {self.value})"
 
     def get_version_sum(self):
         return self.packet_version
@@ -31,7 +31,7 @@ class Operator(Packet):
         self.value = []
 
     def __repr__(self):
-        return f"Type: {self.type_id}; Length_Type: {self.length_type.name}"
+        return f"(Type: {self.type_id}, Version: {self.packet_version}, Length_Type: {self.length_type.name})"
 
     def get_version_sum(self):
         return self.packet_version + sum(val.get_version_sum() for val in self.value)
@@ -68,17 +68,18 @@ def generate_packet(binary):
         if length_type == 0:
             step = 15
             length_val = int(binary[7:7 + step], 2)
-            tail = binary[7 + step: 7 + step + length_val]
+            tail = binary[7 + step + length_val:]
+            pre_tail = binary[7 + step: 7 + step + length_val]
             packet = Operator(packet_version, type_id, length_type, length_val, tail)
-            while tail:
-                inner_packet = generate_packet(tail)
-                tail = inner_packet.tail
+            while pre_tail:
+                inner_packet = generate_packet(pre_tail)
+                pre_tail = inner_packet.tail
                 packet.append(inner_packet)
         else:
             step = 11
             count_val, tail = int(binary[7:7 + step], 2), binary[7 + step:]
             packet = Operator(packet_version, type_id, length_type, count_val, tail)
-            for _ in range(0, count_val):
+            for idx in range(0, count_val):
                 inner_packet = generate_packet(packet.tail)
                 packet.tail = inner_packet.tail
                 packet.append(inner_packet)
