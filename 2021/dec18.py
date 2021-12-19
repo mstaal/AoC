@@ -6,20 +6,14 @@ import json
 import re
 import copy as cp
 
-sys.setrecursionlimit(5000)
-
-d = "(\d)|(\d\d)|(\d\d\d)|(\d\d\d\d)|(\d\d\d\d\d)"
-
 
 def insert_after_or_before(new, inner):
-    start, end = str(new).replace(" ", "").split("x")
-    start = start[0:len(start)-1]
-    end = end[1:]
+    start, end = str(new).replace(" ", "").split("None")
 
-    matches_start = list(re.finditer(d, start))
-    matches_end = list(re.finditer(d, end))
+    matches_start = list(re.finditer("\d{1,}", start))
+    matches_end = list(re.finditer("\d{1,}", end))
     if len(matches_start) == 0 and len(matches_end) == 0:
-        return json.loads(str(new).replace(" ", "").replace("x", "0"))
+        return json.loads(str(new).replace(" ", "").replace("None", "0"))
     if len(matches_start) > 0:
         match_start = matches_start[-1]
         value_start = int(start[match_start.start():match_start.end()]) + inner[0]
@@ -44,7 +38,7 @@ def explode(input):
                         if helper.depth(elm_z) >= 2:
                             for idw, elm_w in enumerate(elm_z):
                                 if helper.depth(elm_w) >= 1:
-                                    copy[idx][idy][idz][idw] = "x"
+                                    copy[idx][idy][idz][idw] = None
                                     complete = insert_after_or_before(copy, elm_w)
                                     return complete, True
     return input, False
@@ -96,13 +90,19 @@ def calculate(content):
     for idx, element in enumerate(content[1:]):
         added = [result, element]
         result = one_calculation(added)
-    return 
+    return result
+
+
+def magnitude(result):
+    if isinstance(result, int):
+        return result
+    return 3 * magnitude(result[0]) + 2 * magnitude(result[1])
 
 
 if __name__ == '__main__':
     content = [json.loads(element) for element in helper.splitFile("day18.txt", "\n")]
-
-    calculate(content)
+    result1 = calculate(content)
+    magn = magnitude(result1)
 
     [split(split(element)[0]) for element in content]
 
