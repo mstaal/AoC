@@ -1,6 +1,5 @@
 import math
-import sys
-
+from itertools import permutations
 from utils import AoCHelper as helper
 import json
 import re
@@ -85,7 +84,7 @@ def one_calculation(added):
     return added
 
 
-def calculate(content):
+def add_all(content):
     result = content[0] if len(content) > 0 else None
     for idx, element in enumerate(content[1:]):
         added = [result, element]
@@ -101,8 +100,9 @@ def magnitude(result):
 
 if __name__ == '__main__':
     content = [json.loads(element) for element in helper.splitFile("day18.txt", "\n")]
-    result1 = calculate(content)
-    magn = magnitude(result1)
+    added = add_all(content)
+    result1 = magnitude(added)
+    print(f"Result 1: {str(result1)}")
 
-    [split(split(element)[0]) for element in content]
-
+    result2 = max(magnitude(one_calculation([x, y])) for x, y in list(permutations(content, 2)))
+    print(f"Result 2: {str(result2)}")
