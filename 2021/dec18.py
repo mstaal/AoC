@@ -1,13 +1,14 @@
 import math
+import sys
 
 from utils import AoCHelper as helper
 import json
 import re
 import copy as cp
 
+sys.setrecursionlimit(5000)
 
 d = "(\d)|(\d\d)|(\d\d\d)|(\d\d\d\d)|(\d\d\d\d\d)"
-regex = f"(\[\[{d},{d}\],{d}\])|(\[{d},\[{d},{d}\]\])"
 
 
 def insert_after_or_before(new, inner):
@@ -49,27 +50,45 @@ def explode(input):
     return input, False
 
 
+def get_first_large_element(input):
+    for idx, elm_x in enumerate(input):
+        if isinstance(elm_x, int) and elm_x > 9:
+            return (idx, None, None, None), elm_x
+        elif isinstance(elm_x, list):
+            for idy, elm_y in enumerate(elm_x):
+                if isinstance(elm_y, int) and elm_y > 9:
+                    return (idx, idy, None, None), elm_y
+                elif isinstance(elm_y, list):
+                    for idz, elm_z in enumerate(elm_y):
+                        if isinstance(elm_z, int) and elm_z > 9:
+                            return (idx, idy, idz, None), elm_z
+                        elif isinstance(elm_z, list):
+                            for idw, elm_w in enumerate(elm_z):
+                                if isinstance(elm_w, int) and elm_w > 9:
+                                    return (idx, idy, idz, idw), elm_w
+    return None, None
+
 def split(input):
-    text_based = str(input).replace(" ", "")
-    match_region = re.search("\d\d|\d\d\d", text_based)
-    if match_region is None:
-        return input, False
-    element = int(text_based[match_region.regs[0][0]:match_region.regs[0][1]])
-    new_inner_list = [math.floor(element / 2), math.ceil(element / 2)]
-    new_list_text = str(new_inner_list).replace(" ", "")
-    new_text_based = text_based.replace(str(element), new_list_text, 1)
-    result = json.loads(new_text_based)
-    return result, True
+    copy = cp.deepcopy(input)
+    tup, value = get_first_large_element(copy)
+    if value is None:
+        return copy, False
+    loop = [element for element in tup if element is not None]
+    lst = copy
+    for index in loop[0:len(loop)-1]:
+        lst = lst[index]
+    lst[loop[-1]] = [math.floor(value / 2), math.ceil(value / 2)]
+    return copy, True
 
 
 def one_calculation(added):
-    while helper.depth(added) > 4:
-        added = explode(added)[0]
-    added, spl_result = split(added)
-    if not spl_result:
-        return added
-    else:
-        return one_calculation(added)
+    spl_result = True
+    while helper.depth(added) > 4 or spl_result:
+        added, explode_res = explode(added)
+        if explode_res:
+            continue
+        added, spl_result = split(added)
+    return added
 
 
 def calculate(content):
@@ -77,7 +96,7 @@ def calculate(content):
     for idx, element in enumerate(content[1:]):
         added = [result, element]
         result = one_calculation(added)
-    hhf = ""
+    return 
 
 
 if __name__ == '__main__':
