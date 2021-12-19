@@ -1,7 +1,6 @@
 import math
 
 from utils import AoCHelper as helper
-from difflib import SequenceMatcher
 import json
 import re
 import copy as cp
@@ -11,28 +10,25 @@ d = "(\d)|(\d\d)|(\d\d\d)|(\d\d\d\d)|(\d\d\d\d\d)"
 regex = f"(\[\[{d},{d}\],{d}\])|(\[{d},\[{d},{d}\]\])"
 
 
-def insert_after_or_before(old, new, old_inner, new_inner, previous):
-    seq_match = SequenceMatcher(None, str(old).replace(" ", ""), str(new).replace(" ", ""))
-    end_idx = seq_match.get_matching_blocks()[0].size
-    start = str(old).replace(" ", "")[0:end_idx - 1]
-    end = str(old).replace(" ", "")[end_idx + len(old_inner) - 1:]
-    parsed_list = json.loads(old_inner)
-    if previous:
-        matches = list(re.finditer(d, start))
-        if len(matches) == 0:
-            return str(new).replace(" ", "")
-        match = matches[-1]
-        value = int(start[match.start():match.end()]) + parsed_list[0][0]
-        start = start[0:match.start()] + str(value) + start[match.end():]
-        return start + new_inner + end
-    else:
-        matches = list(re.finditer(d, end))
-        if len(matches) == 0:
-            return str(new).replace(" ", "")
-        match = matches[0]
-        value = int(end[match.start():match.end()]) + parsed_list[1][1]
-        end = end[0:match.start()] + str(value) + end[match.end():]
-        return start + new_inner + end
+def insert_after_or_before(new, inner):
+    start, end = str(new).replace(" ", "").split("x")
+    start = start[0:len(start)-1]
+    end = end[1:]
+
+    matches_start = list(re.finditer(d, start))
+    matches_end = list(re.finditer(d, end))
+    if len(matches_start) == 0 and len(matches_end) == 0:
+        return json.loads(str(new).replace(" ", "").replace("x", "0"))
+    if len(matches_start) > 0:
+        match_start = matches_start[-1]
+        value_start = int(start[match_start.start():match_start.end()]) + inner[0]
+        start = start[0:match_start.start()] + str(value_start) + start[match_start.end():]
+    if len(matches_end) > 0:
+        match_end = matches_end[0]
+        value_end = int(end[match_end.start():match_end.end()]) + inner[1]
+        end = end[0:match_end.start()] + str(value_end) + end[match_end.end():]
+    result = json.loads(start + "0" + end)
+    return result
 
 
 def explode(input):
@@ -45,28 +41,17 @@ def explode(input):
                 if helper.depth(elm_y) >= 3:
                     for idz, elm_z in enumerate(elm_y):
                         if helper.depth(elm_z) >= 2:
-                            text_based = str(elm_z).replace(" ", "")
-                            match = re.search(regex, text_based)
-                            simple_list = json.loads(match.string)
-                            if isinstance(simple_list[0], int):
-                                previous = False
-                                new_element = [simple_list[0] + simple_list[1][0], 0]
-                            else:
-                                previous = True
-                                new_element = [0, simple_list[1] + simple_list[0][1]]
-                            new_element_text = str(new_element).replace(" ", "")
-                            new_text = text_based.replace(match.string, new_element_text, 1)
-                            new_inner_list = json.loads(new_text)
-                            copy[idx][idy][idz] = new_inner_list
-                            complete_text = insert_after_or_before(input, copy, text_based, new_text, previous)
-                            complete = json.loads(complete_text)
-                            return complete, True
+                            for idw, elm_w in enumerate(elm_z):
+                                if helper.depth(elm_w) >= 1:
+                                    copy[idx][idy][idz][idw] = "x"
+                                    complete = insert_after_or_before(copy, elm_w)
+                                    return complete, True
     return input, False
 
 
 def split(input):
     text_based = str(input).replace(" ", "")
-    match_region = re.search("\d\d", text_based)
+    match_region = re.search("\d\d|\d\d\d", text_based)
     if match_region is None:
         return input, False
     element = int(text_based[match_region.regs[0][0]:match_region.regs[0][1]])
