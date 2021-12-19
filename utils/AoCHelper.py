@@ -1,4 +1,6 @@
 import itertools
+import re
+
 import numpy as np
 import pandas as pd
 from functools import reduce
@@ -171,6 +173,14 @@ def baseToHex(number, base=2):
 
 def baseToBase10(number, base=2):
     return int(str(number), base)
+
+
+def replace_nth(text, sub, wanted, n):
+    where = [m for m in re.finditer(sub, text)][n]
+    before = text[:where.regs[0][0]]
+    after = text[where.regs[0][1]:]
+    new_string = before + wanted + after
+    return new_string
 
 
 def gcdExtended(a, b):
