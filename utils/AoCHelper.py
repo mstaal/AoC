@@ -23,6 +23,14 @@ def to_3d_dict(array):
             for idz in range(0, len(array[0][0]))}
 
 
+def embed_matrix(matrix, val=0, np_type=np.int64):
+    new_matrix = np.rot90(np.c_[matrix, [val for _ in matrix]].astype(np_type))
+    new_matrix = np.rot90(np.c_[new_matrix, [val for _ in new_matrix]].astype(np_type))
+    new_matrix = np.rot90(np.c_[new_matrix, [val for _ in new_matrix]].astype(np_type))
+    new_matrix = np.rot90(np.c_[new_matrix, [val for _ in new_matrix]].astype(np_type))
+    return new_matrix
+
+
 def linear_2d_operation(points, matrix, as_tuple):
     if isinstance(points, tuple) or (isinstance(points, list) and len(points) == 2 and all(isinstance(s, int) for s in points)):
         result = np.array(points).dot(matrix)
