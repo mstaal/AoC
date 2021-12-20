@@ -1,20 +1,18 @@
 from functools import reduce
 from utils import AoCHelper as helper
-from enum import Enum
 
 
 class Packet:
-    def __init__(self, packet_version, type_id):
+    def __init__(self, packet_version, type_id, tail):
         self.packet_version = packet_version
         self.type_id = type_id
-        self.tail = None
+        self.tail = tail
 
 
 class Literal(Packet):
     def __init__(self, packet_version, type_id, value, tail):
-        super().__init__(packet_version, type_id)
+        super().__init__(packet_version, type_id, tail)
         self.value = value
-        self.tail = tail
 
     def get_value(self):
         return self.value
@@ -27,15 +25,13 @@ class Literal(Packet):
 
 
 class Operator(Packet):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id)
-        self.length_type = LengthType(length_type) if length_type is not None else None
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, tail)
         self.operator_val = operator_val
-        self.tail = tail
         self.value = []
 
     def __repr__(self):
-        return f"(Type: {self.type_id}, Version: {self.packet_version}, Length_Type: {self.length_type.name})"
+        return f"(Type: {self.type_id}, Version: {self.packet_version})"
 
     def get_version_sum(self):
         return self.packet_version + sum(val.get_version_sum() for val in self.value)
@@ -45,64 +41,59 @@ class Operator(Packet):
 
 
 class Sum(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return sum([element.get_value() for element in self.value])
 
 
 class Product(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return reduce(lambda x, y: x*y, [element.get_value() for element in self.value])
 
 
 class Minimum(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return min([element.get_value() for element in self.value])
 
 
 class Maximum(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return max([element.get_value() for element in self.value])
 
 
 class Greater(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return 1 if self.value[0].get_value() > self.value[1].get_value() else 0
 
 
 class Less(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return 1 if self.value[0].get_value() < self.value[1].get_value() else 0
 
 
 class Equal(Operator):
-    def __init__(self, packet_version, type_id, length_type, operator_val, tail):
-        super().__init__(packet_version, type_id, length_type, operator_val, tail)
+    def __init__(self, packet_version, type_id, operator_val, tail):
+        super().__init__(packet_version, type_id, operator_val, tail)
 
     def get_value(self):
         return 1 if self.value[0].get_value() == self.value[1].get_value() else 0
-
-
-class LengthType(Enum):
-    total_length = 0
-    number_of = 1
 
 
 def hex_to_bin(h):
@@ -110,21 +101,21 @@ def hex_to_bin(h):
     return '0' * (len(h) * 4 - len(b)) + b
 
 
-def buildOperator(packet_version, type_id, length_type, length_val, tail):
+def buildOperator(packet_version, type_id, length_val, tail):
     if type_id == 0:
-        return Sum(packet_version, type_id, length_type, length_val, tail)
+        return Sum(packet_version, type_id, length_val, tail)
     elif type_id == 1:
-        return Product(packet_version, type_id, length_type, length_val, tail)
+        return Product(packet_version, type_id, length_val, tail)
     elif type_id == 2:
-        return Minimum(packet_version, type_id, length_type, length_val, tail)
+        return Minimum(packet_version, type_id, length_val, tail)
     elif type_id == 3:
-        return Maximum(packet_version, type_id, length_type, length_val, tail)
+        return Maximum(packet_version, type_id, length_val, tail)
     elif type_id == 5:
-        return Greater(packet_version, type_id, length_type, length_val, tail)
+        return Greater(packet_version, type_id, length_val, tail)
     elif type_id == 6:
-        return Less(packet_version, type_id, length_type, length_val, tail)
+        return Less(packet_version, type_id, length_val, tail)
     elif type_id == 7:
-        return Equal(packet_version, type_id, length_type, length_val, tail)
+        return Equal(packet_version, type_id, length_val, tail)
 
 
 def generate_packet(binary):
@@ -147,7 +138,7 @@ def generate_packet(binary):
             length_val = int(binary[7:7 + step], 2)
             tail = binary[7 + step + length_val:]
             pre_tail = binary[7 + step: 7 + step + length_val]
-            packet = buildOperator(packet_version, type_id, length_type, length_val, tail)
+            packet = buildOperator(packet_version, type_id, length_val, tail)
             while pre_tail:
                 inner_packet = generate_packet(pre_tail)
                 pre_tail = inner_packet.tail
@@ -155,7 +146,7 @@ def generate_packet(binary):
         else:
             step = 11
             count_val, tail = int(binary[7:7 + step], 2), binary[7 + step:]
-            packet = buildOperator(packet_version, type_id, length_type, count_val, tail)
+            packet = buildOperator(packet_version, type_id, count_val, tail)
             for idx in range(0, count_val):
                 inner_packet = generate_packet(packet.tail)
                 packet.tail = inner_packet.tail
