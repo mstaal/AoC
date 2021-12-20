@@ -42,5 +42,5 @@ if __name__ == '__main__':
     print(f"Result 1: {str(count1)}")
 
     applied2, count2 = apply(image, algorithm, 50)
-    print(f"Result 1: {str(count2)}")
+    print(f"Result 2: {str(count2)}")
 
