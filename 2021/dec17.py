@@ -8,26 +8,29 @@ def velocity_at_time(velocity, t):
 
 
 def move(velocity, area):
-    h = 0
-    point = (0, 0)
-    if area[0][0] <= point[0] <= area[0][1] and area[1][0] <= point[1] <= area[1][1]:
-        return point, 0, velocity, True
-    t = 1
+    info = {"h": 0, "point": (0, 0), "t": 0, "velocity": velocity, "works": False}
+    if area[0][0] <= info["point"][0] <= area[0][1] and area[1][0] <= info["point"][1] <= area[1][1]:
+        info["works"] = True
+        return info
+    info["t"] = 1
     while True:
-        vel = velocity_at_time(velocity, t)
-        point = (point[0] + vel[0], point[1] + vel[1])
-        h = max(h, point[1])
-        if area[0][0] <= point[0] <= area[0][1] and area[1][0] <= point[1] <= area[1][1]:
-            return point, h, velocity, True
-        if point[0] > area[0][1] or point[1] < area[1][1]:
-            return point, h, velocity, False
-        t += 1
+        vel = velocity_at_time(velocity, info["t"])
+        info["point"] = (info["point"][0] + vel[0], info["point"][1] + vel[1])
+        info["h"] = max(info["h"], info["point"][1])
+        if area[0][0] <= info["point"][0] <= area[0][1] and area[1][0] <= info["point"][1] <= area[1][1]:
+            info["works"] = True
+            return info
+        if info["point"][0] > area[0][1] or info["point"][1] < area[1][1]:
+            return info
+        info["t"] += 1
 
 
 def exercise1(area, velocities):
     results = [move(vel, area) for vel in velocities]
-    results_filtered = [x for x in results if x[3]]
-    return max([r[1] for r in results_filtered])
+    results_filtered = [x for x in results if x["works"]]
+    maximum = max([r["h"] for r in results_filtered])
+    max_results = [res for res in results_filtered if res["h"] == maximum]
+    return maximum
 
 
 if __name__ == '__main__':
