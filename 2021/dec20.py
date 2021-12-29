@@ -4,7 +4,7 @@ import copy as cc
 
 
 def apply_once(input, algorithm, v):
-    embedded = helper.embed_matrix(helper.embed_matrix(cc.deepcopy(input), v, np.int64), v, np.int64)
+    embedded = helper.embed_matrix(cc.deepcopy(input), v, np.int64, 2)
     copy = cc.deepcopy(embedded)
     for idx, elm_x in enumerate(embedded):
         for idy, elm_y in enumerate(elm_x):

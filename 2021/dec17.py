@@ -8,11 +8,7 @@ def velocity_at_time(velocity, t):
 
 
 def move(velocity, area):
-    info = {"h": 0, "point": (0, 0), "t": 0, "velocity": velocity, "works": False}
-    if area[0][0] <= info["point"][0] <= area[0][1] and area[1][0] <= info["point"][1] <= area[1][1]:
-        info["works"] = True
-        return info
-    info["t"] = 1
+    info = {"h": 0, "point": (0, 0), "t": 1, "velocity": velocity, "works": False}
     while True:
         vel = velocity_at_time(velocity, info["t"])
         info["point"] = (info["point"][0] + vel[0], info["point"][1] + vel[1])
