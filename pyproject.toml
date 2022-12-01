@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "aoc"
+version = "0.0.1"
+description = "Hydra is an API for analytical calculations on vessel performance data from the StarConnect project."
+authors = ["StarConnect Analytics <starconnect-analytics@maersk.onmicrosoft.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9.12,<3.12"
+python-json-logger = "2.0.2"
+numpy = "1.22.3"
+pandas = "1.4.0"
+pydantic = "1.9.0"
+httpx = "0.23.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "5.3.3"
+nose = "1.3.7"
+coverage = "5.0.3"
+deepdiff6 = ">=6.2.0"
+devtools = ">=0.9.0"
+
+
+[tool.poetry.extras]
+vessel-k8s = ["prometheus-fastapi-instrumentator", "protobuf", "lightgbm", "networkx", "shapely", "tqdm"]
+shore = ["msal", "fastapi-pagination", "prometheus-fastapi-instrumentator", "protobuf", "azure-storage-blob", "aiohttp", "async-lru", "lightgbm", "networkx", "shapely", "tqdm"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

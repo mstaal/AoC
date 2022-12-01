@@ -1,5 +1,6 @@
 import itertools
 import re
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -122,9 +123,7 @@ def stringIndexLoop(text, index):
 
 
 def splitFile(file, sep):
-    with open(file) as file:
-        content = list(file.read().split(sep))
-    return content
+    return Path(file).read_text(encoding="UTF-8").split(sep)
 
 
 def binaryParse(word, letter):
