@@ -8,30 +8,32 @@ shape_map = {
     "C": 3
 }
 
-exercise_1_translate = {
-    "X": "A",
-    "Y": "B",
-    "Z": "C"
+match_outcome_map = {
+    "A": {
+        "A": "Y",
+        "B": "Z",
+        "C": "X"
+    },
+    "B": {
+        "A": "X",
+        "B": "Y",
+        "C": "Z"
+    },
+    "C": {
+        "A": "Z",
+        "B": "X",
+        "C": "Y"
+    }
 }
 
-match_generator_map = {
-    ("A", "X"): "C",
-    ("A", "Y"): "A",
-    ("A", "Z"): "B",
-    ("B", "X"): "A",
-    ("B", "Y"): "B",
-    ("B", "Z"): "C",
-    ("C", "X"): "B",
-    ("C", "Y"): "C",
-    ("C", "Z"): "A",
-}
+exercise_1_translate = {val: key for key, val in match_outcome_map["B"].items()}
 
 
 def game_score(entry):
     opponent, me = entry
-    if (opponent == "A" and me == "B") or (opponent == "B" and me == "C") or (opponent == "C" and me == "A"):
+    if match_outcome_map[opponent][me] == "Z":
         return 6 + shape_map[me]
-    elif opponent == me:
+    elif match_outcome_map[opponent][me] == "Y":
         return 3 + shape_map[me]
     else:
         return shape_map[me]
@@ -42,13 +44,16 @@ def calculate_total(games):
 
 
 @helper.profiler
-def part1(content):
-    return calculate_total([(opponent, exercise_1_translate[me]) for opponent, me in content])
+def part1(content_list):
+    games = [(opponent, exercise_1_translate[me]) for opponent, me in content_list]
+    return calculate_total(games)
 
 
 @helper.profiler
-def part2(content):
-    return calculate_total([(opponent, match_generator_map[opponent, me]) for opponent, me in content])
+def part2(content_list):
+    games = [(opponent, me) for opponent, victory in content_list for me, v in match_outcome_map[opponent].items() if
+             victory == v]
+    return calculate_total(games)
 
 
 if __name__ == '__main__':
