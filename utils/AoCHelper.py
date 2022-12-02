@@ -6,6 +6,17 @@ import numpy as np
 import pandas as pd
 from functools import reduce
 from utils.GlobalVariables import all_directions, all_directions_3d
+from time import time
+
+
+def profiler(method):
+    def wrapper_method(*arg, **kw):
+        t = time()
+        ret = method(*arg, **kw)
+        print('Method ' + method.__name__ + ' took : ' +
+              "{:2.5f}".format(time()-t) + ' sec')
+        return ret
+    return wrapper_method
 
 
 def prod(ints):
