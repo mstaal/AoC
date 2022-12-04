@@ -10,7 +10,7 @@ def letter_to_priority(letter: str):
 
 @helper.profiler
 def part1(content_list):
-    duplicates = [list(set(a).intersection(b))[0] for a, b in content_list]
+    duplicates = [duplicate for a, b in content_list for duplicate in set(a).intersection(b)]
     priorities = [letter_to_priority(e) for e in duplicates]
     return sum(priorities)
 
@@ -18,8 +18,8 @@ def part1(content_list):
 @helper.profiler
 def part2(content_list):
     # https://stackoverflow.com/questions/1624883/alternative-way-to-split-a-list-into-groups-of-n
-    groups = [list(e) for e in zip(*(iter(content_list),) * 3)]
-    duplicates_within_group = [list(set(a).intersection(b).intersection(c))[0] for a, b, c in groups]
+    groups = zip(*(iter(content_list),) * 3)
+    duplicates_within_group = [duplicate for a, b, c in groups for duplicate in set(a).intersection(b).intersection(c)]
     priorities = [letter_to_priority(e) for e in duplicates_within_group]
     return sum(priorities)
 
