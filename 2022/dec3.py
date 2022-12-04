@@ -10,7 +10,8 @@ def letter_to_priority(letter: str):
 
 @helper.profiler
 def part1(content_list):
-    duplicates = [duplicate for a, b in content_list for duplicate in set(a).intersection(b)]
+    content_split = [(e[:len(e) // 2], e[len(e) // 2:]) for e in content_list]
+    duplicates = [duplicate for a, b in content_split for duplicate in set(a).intersection(b)]
     priorities = [letter_to_priority(e) for e in duplicates]
     return sum(priorities)
 
@@ -26,7 +27,6 @@ def part2(content_list):
 
 if __name__ == '__main__':
     content = Path("data/day3.txt").read_text().split("\n")
-    content_split = [(e[:divmod(len(e), 2)[0]], e[divmod(len(e), 2)[0]:]) for e in content]
 
-    print(f"Result 1: {str(part1(content_split))}")
+    print(f"Result 1: {str(part1(content))}")
     print(f"Result 2: {str(part2(content))}")
