@@ -2,12 +2,6 @@ from utils import AoCHelper as helper
 from pathlib import Path
 
 
-def to_interval(entry: str):
-    a, b = entry
-    interval = list(range(int(a), int(b)+1))
-    return interval
-
-
 @helper.profiler
 def part1(content_list):
     return [(a, b) for a, b in content_list if set(a) <= set(b) or set(a) >= set(b)]
@@ -20,7 +14,8 @@ def part2(content_list):
 
 if __name__ == '__main__':
     content = Path("data/day4.txt").read_text().split("\n")
-    content_cleaned = [(to_interval(a.split("-")), to_interval(b.split("-"))) for a, b in [e.split(",") for e in content]]
+    def to_range(a, b): return range(int(a), int(b) + 1)
+    content_cleaned = [(to_range(*a.split("-")), to_range(*b.split("-"))) for a, b in [e.split(",") for e in content]]
 
     fully_contained_filter = part1(content_cleaned)
     overlapping_filter = part2(content_cleaned)
