@@ -1,6 +1,6 @@
 from utils import AoCHelper as helper
 from pathlib import Path
-import copy
+from copy import deepcopy
 
 
 def parse_crate_structure(crate_raw_input):
@@ -23,19 +23,18 @@ def parse_procedures(procedures_raw_input):
 
 @helper.profiler
 def part1(crate_input, procedures_input):
-    crate_copy = copy.deepcopy(crate_input)
+    crate_copy = deepcopy(crate_input)
     for amount, from_, to_ in procedures_input:
         from_list = crate_copy[from_]
         to_list = crate_copy[to_]
         for _ in range(0, amount):
-            popped = from_list.pop()
-            to_list.append(popped)
+            to_list.append(from_list.pop())
     return crate_copy
 
 
 @helper.profiler
 def part2(crate_input, procedures_input):
-    crate_copy = copy.deepcopy(crate_input)
+    crate_copy = deepcopy(crate_input)
     for amount, from_, to_ in procedures_input:
         from_list = crate_copy[from_]
         to_list = crate_copy[to_]
@@ -51,9 +50,9 @@ if __name__ == '__main__':
     crates = parse_crate_structure(crates_raw)
     procedures = parse_procedures(procedures_raw)
 
-
-    question1 = "".join([l[-1] for _, l in part1(crates, procedures).items()])
-    question2 = "".join([l[-1] for _, l in part2(crates, procedures).items()])
+    def joining(result: dict): return "".join([val[-1] for val in result.values()])
+    question1 = joining(part1(crates, procedures))
+    question2 = joining(part2(crates, procedures))
 
     print(f"Result 1: {str(question1)}")
     print(f"Result 2: {str(question2)}")
