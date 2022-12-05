@@ -4,12 +4,10 @@ from copy import deepcopy
 
 
 def parse_crate_structure(crate_raw_input):
-    crate_map = dict()
     splitting = crate_raw_input.split("\n")
     lines = [e.split(" ") for e in splitting]
     numbers = [int(e) for e in splitting[-1].split(" ") if e.isdigit()]
-    for n in numbers:
-        crate_map[n] = list(reversed([c[n-1][1] for c in lines[:-1] if c[n-1] != "..."]))
+    crate_map = {n: list(reversed([c[n-1][1] for c in lines[:-1] if c[n-1] != "..."])) for n in numbers}
     return crate_map
 
 
