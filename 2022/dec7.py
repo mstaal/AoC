@@ -48,8 +48,15 @@ def part1(dir_manager):
 
 
 @helper.profiler
-def part2(content_list):
-    return [(a, b) for a, b in content_list if len(set(a).intersection(b)) > 0]
+def part2(dir_manager):
+    expansion = dir_expander(dir_manager)
+    size_count = {direc: sum(size for size, _ in entry) for direc, entry in expansion.items()}
+    total_size = size_count[Path("/")]
+    demanded_unused_space = 70000000 - total_size
+    required = 30000000 - demanded_unused_space
+    relevant_sizes = {key: size for key, size in size_count.items() if size >= required}
+    minimal_size_choice = size_count[list(relevant_sizes.keys())[-1]]
+    return minimal_size_choice
 
 
 if __name__ == '__main__':
@@ -57,7 +64,7 @@ if __name__ == '__main__':
     dirs = parse_content(content)
 
     question1 = part1(dirs)
-    question2 = part1(dirs)
+    question2 = part2(dirs)
 
     print(f"Result 1: {str(question1)}")
     print(f"Result 2: {str(question2)}")
