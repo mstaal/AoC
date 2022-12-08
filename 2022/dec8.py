@@ -1,7 +1,15 @@
 from utils import AoCHelper as helper
 from pathlib import Path
 from operator import mul
-from functools import reduce # python3 compatibility
+from functools import reduce
+
+
+def get_rays(r, c, content_list) -> tuple[list, list, list, list]:
+    top = [row[c] for row in content_list[:r]]
+    bottom = [row[c] for row in content_list[r + 1:]]
+    left = [col for col in content_list[r][:c]]
+    right = [col for col in content_list[r][c + 1:]]
+    return top, bottom, left, right
 
 
 @helper.profiler
@@ -9,10 +17,7 @@ def part1(content_list):
     visible_count = 0
     for r, row in enumerate(content_list):
         for c, element in enumerate(row):
-            top = [row[c] for row in content_list[:r]]
-            bottom = [row[c] for row in content_list[r + 1:]]
-            left = [col for col in content_list[r][:c]]
-            right = [col for col in content_list[r][c + 1:]]
+            top, bottom, left, right = get_rays(r, c, content_list)
             if any(len(e) == 0 or max(e) < element for e in [top, bottom, left, right]):
                 visible_count += 1
     return visible_count
@@ -23,20 +28,15 @@ def part2(content_list):
     score = dict()
     for r, row in enumerate(content_list):
         for c, element in enumerate(row):
-            a_top = list(reversed([row[c] for row in content_list[:r]]))
-            a_bottom = [row[c] for row in content_list[r + 1:]]
-            a_left = list(reversed([col for col in content_list[r][:c]]))
-            a_right = [col for col in content_list[r][c + 1:]]
+            a_top, a_bottom, a_left, a_right = get_rays(r, c, content_list)
             multipliers = []
-            for lst in [a_top, a_bottom, a_left, a_right]:
+            for lst in [list(reversed(a_top)), a_bottom, list(reversed(a_left)), a_right]:
                 mult = 0
-                for m, e in enumerate(lst):
+                for e in lst:
                     mult += 1
                     if element <= e:
                         break
                 multipliers.append(mult)
-                if len(lst) == 0:
-                    break
             product = reduce(mul, multipliers, 1)
             if product > 0:
                 score[(r, c)] = product
