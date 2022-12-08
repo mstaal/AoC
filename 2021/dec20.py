@@ -9,7 +9,7 @@ def apply_once(input, algorithm, v):
     for idx, elm_x in enumerate(embedded):
         for idy, elm_y in enumerate(elm_x):
             if 0 < idx < len(embedded) - 1 and 0 < idy < len(elm_x) - 1:
-                adj = list(helper.get_neighbours(embedded, idx, idy).keys())
+                adj = list(helper.get_neighbours_dict(embedded, idx, idy).keys())
                 adj.append((idx, idy))
                 adj = sorted(adj)
                 pixels = ''.join([str(embedded[x][y]) for x, y in adj])

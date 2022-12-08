@@ -67,7 +67,16 @@ def reflect_points_y(points, as_tuple=False):
     return linear_2d_operation(points, [[-1, 0], [0, 1]], as_tuple)
 
 
-def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, characters_to_skip=[], radius=1):
+def get_neighbor_rays(r, c, content: list[list], max_radius=None) -> tuple[list, list, list, list]:
+    def _condition(i: int): return max_radius is None or i < max_radius
+    top = [row[c] for i, row in enumerate(content[:r]) if _condition(i)]
+    bottom = [row[c] for i, row in enumerate(content[r + 1:]) if _condition(i)]
+    left = [col for i, col in enumerate(content[r][:c]) if _condition(i)]
+    right = [col for i, col in enumerate(content[r][c + 1:]) if _condition(i)]
+    return top, bottom, left, right
+
+
+def get_neighbours_dict(coll, i, j, directions=all_directions, ignore_none=False, characters_to_skip=[], radius=1):
     adjacent_material = {}
     for x, y in [(x * radius, y * radius) for x, y in directions]:
         if 0 <= i + x < len(coll) and 0 <= j + y < len(coll[0]):
@@ -79,7 +88,7 @@ def get_neighbours(coll, i, j, directions=all_directions, ignore_none=False, cha
     return adjacent_material
 
 
-def get_neighbours_3d(coll, i, j, k, directions=all_directions_3d, ignore_none=False, characters_to_skip=[], radius=1):
+def get_neighbours_dict_3d(coll, i, j, k, directions=all_directions_3d, ignore_none=False, characters_to_skip=[], radius=1):
     adjacent_material = {}
     for x, y, z in [(x * radius, y * radius, z * radius) for x, y, z in directions]:
         if 0 <= i + x < len(coll) and 0 <= j + y < len(coll[0]) and 0 <= k + z < len(coll[0][0]):

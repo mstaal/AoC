@@ -8,7 +8,7 @@ def flash_handling(content, memory):
     if len(flashing_filtered) == 0:
         return memory
     for x, y in flashing_filtered:
-        for ax, ay in helper.get_neighbours(content, x, y, ignore_none=True).keys():
+        for ax, ay in helper.get_neighbours_dict(content, x, y, ignore_none=True).keys():
             content[ax][ay] += 1
     memory = memory.union(flashing_filtered)
     return flash_handling(content, memory)

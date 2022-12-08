@@ -9,7 +9,7 @@ def exercise(content):
     dijk_graph = {}
     for idx, elm_x in enumerate(content):
         for idy, dist_back in enumerate(elm_x):
-            adjacent = helper.get_neighbours(content, idx, idy, cardinal_directions, True)
+            adjacent = helper.get_neighbours_dict(content, idx, idy, cardinal_directions, True)
             for adj, dist_to_adj in adjacent.items():
                 dijk_graph[(idx, idy)] = dijk_graph.get((idx, idy), {})
                 dijk_graph[adj] = dijk_graph.get(adj, {})
