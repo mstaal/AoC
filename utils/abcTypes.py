@@ -1,5 +1,28 @@
+import math
 from heapq import heappush, heappop
 from queue import PriorityQueue
+
+
+class T(tuple):
+    def __new__(cls, *args):
+        cls.val = args
+        return tuple.__new__(cls, args)
+
+    def __add__(self, other):
+        return T(*(sum(x) for x in zip(self, other)))
+
+    def __sub__(self, other):
+        return self.__add__(-i for i in other)
+
+    def __eq__(self, other):
+        return tuple(self) == tuple(other)
+
+    def __hash__(self):
+        return self.val.__hash__()
+
+    def length(self):
+        return math.sqrt(sum(i*i for i in self))
+
 
 # https://code.activestate.com/recipes/384122/
 # http://tomerfiliba.com/blog/Infix-Operators/
