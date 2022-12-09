@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 from utils.abcTypes import T
 
+max_allowed_distance = T(1, 1).length() + 0.0000001
 
 direction_map = {"U": T(0, 1), "D": T(0, -1), "L": T(-1, 0), "R": T(1, 0)}
 
@@ -13,8 +14,7 @@ def part1(content_list):
     tail_position = T(0, 0)
 
     for direction, count in content_list:
-        max_allowed_distance = T(1, 1).length() + 0.0000001
-        for idx, _ in enumerate(range(count)):
+        for _ in range(count):
             direction_vector = direction_map[direction]
             head_position += direction_vector
             diff_vector = head_position - tail_position
