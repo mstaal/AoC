@@ -5,15 +5,15 @@ from functools import reduce
 
 
 def compute_register(content_list):
-    x_values = [1]
+    register = [1]
     for idx, cmd in enumerate(content_list):
         if cmd == "noop":
-            x_values.append(x_values[-1])
+            register.append(register[-1])
         else:
             _, x = cmd.split(" ")
-            x_values.append(x_values[-1])
-            x_values.append(x_values[-1]+int(x))
-    return x_values
+            register.append(register[-1])
+            register.append(register[-1]+int(x))
+    return register
 
 
 @helper.profiler
