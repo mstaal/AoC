@@ -1,4 +1,4 @@
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 from pathlib import Path
 
 
@@ -20,9 +20,8 @@ def part1(content_list):
 @helper.profiler
 def part2(content_list):
     register = compute_register(content_list)
-    groups = [register[i:i + 40] for i in range(0, len(register)-1, 40)]
     text = ""
-    for group in groups:
+    for group in [register[i:i + 40] for i in range(0, len(register)-1, 40)]:
         sprite = 0
         line = ""
         for current_pixel, element in enumerate(group):

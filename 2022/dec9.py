@@ -14,10 +14,9 @@ def calculate_unique_tail_visits(content_list, rope_length):
     tail_memory = {i: {T(0, 0)} for i in range(1, rope_length+1)}
     rope = [T(0, 0) for _ in range(0, rope_length+1)]
     for direction, count in content_list:
-        direction_vector = direction_map[direction]
         for _ in range(count):
-            rope[0] += direction_vector
-            for idx in range(0, rope_length):
+            rope[0] += direction_map[direction]
+            for idx in range(0, len(rope)-1):
                 diff_vector = rope[idx] - rope[idx+1]
                 distance = diff_vector.length()
                 if distance > max_allowed_distance:
@@ -31,8 +30,8 @@ def calculate_unique_tail_visits(content_list, rope_length):
                     elif diff_vector in [T(0, -2), T(1, -2), T(-1, -2)]:
                         rope[idx+1] = T(x, y+1)
                     else:
-                        def on_diagonal(d): return (rope[idx] - (rope[idx+1] + d)).length() == max_allowed_distance
-                        rope[idx+1] = rope[idx+1] + next(d for d in diagonal_directions if on_diagonal(d))
+                        def diagonal_fit(d): return (rope[idx] - (rope[idx+1] + d)).length() == max_allowed_distance
+                        rope[idx+1] += next(filter(diagonal_fit, diagonal_directions))
                 tail_memory[idx+1].add(rope[idx+1])
     return len(tail_memory[rope_length])
 
