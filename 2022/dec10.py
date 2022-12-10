@@ -1,26 +1,20 @@
 from utils import AoCHelper as helper
 from pathlib import Path
-from operator import mul
-from functools import reduce
 
 
 def compute_register(content_list):
     register = [1]
     for idx, cmd in enumerate(content_list):
-        if cmd == "noop":
-            register.append(register[-1])
-        else:
-            _, x = cmd.split(" ")
-            register.append(register[-1])
-            register.append(register[-1]+int(x))
+        _, *rest = cmd.split(" ")
+        register.append(register[-1])
+        if len(rest) > 0:
+            register.append(register[-1]+int(rest[0]))
     return register
 
 
 @helper.profiler
 def part1(content_list):
-    register = compute_register(content_list)
-    samples = [(20+i*40) * register[:240][(20+i*40)-1] for i in range(6)]
-    return sum(samples)
+    return sum([(20+i*40) * compute_register(content_list)[:240][(20+i*40)-1] for i in range(6)])
 
 
 @helper.profiler
