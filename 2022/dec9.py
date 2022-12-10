@@ -1,6 +1,6 @@
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 from pathlib import Path
-from utils.abcTypes import T
+from utils.aoc_types import T
 
 max_allowed_distance = T(1, 1).length()
 

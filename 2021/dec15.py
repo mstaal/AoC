@@ -1,8 +1,8 @@
 import numpy as np
 
-from utils import AoCHelper as helper
-from utils.GlobalVariables import cardinal_directions
-from utils.abcTypes import Dijkstra
+from utils import aoc_helper as helper
+from utils.global_variables import cardinal_directions
+from utils.aoc_types import Dijkstra
 
 
 def exercise(content):

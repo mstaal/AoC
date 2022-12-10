@@ -1,4 +1,4 @@
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 signLambda = lambda letter: 1 if letter == "R" else -1
 

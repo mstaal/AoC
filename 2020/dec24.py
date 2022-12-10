@@ -1,7 +1,7 @@
 import re
 import hexutil as hex
 import numpy as np
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 directions = {
     'e': (2, 0),

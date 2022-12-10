@@ -1,6 +1,6 @@
 import math
 from itertools import permutations
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 import json
 import re
 import copy as cp

@@ -1,5 +1,5 @@
 import copy as cc
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 
 def flash_handling(content, memory):

@@ -1,5 +1,5 @@
 
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 
 def calculateFirst(content, sum=0, index=0, executed=[]):

@@ -3,7 +3,7 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-from utils import AoCHelper as helper, GlobalVariables as glob
+from utils import aoc_helper as helper, global_variables as glob
 import numpy as np
 
 

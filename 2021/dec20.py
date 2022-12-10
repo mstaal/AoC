@@ -1,4 +1,4 @@
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 import numpy as np
 import copy as cc
 

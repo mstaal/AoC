@@ -1,5 +1,5 @@
-import utils.AoCHelper as helper
-from utils.abcTypes import Infix
+import utils.aoc_helper as helper
+from utils.aoc_types import Infix
 
 
 # https://code.activestate.com/recipes/384122/

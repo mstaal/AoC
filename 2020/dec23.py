@@ -8,8 +8,8 @@ import llist
 from collections import Counter, deque
 
 import pandas as pd
-from utils import AoCHelper as helper
-import utils.abcTypes as types
+from utils import aoc_helper as helper
+import utils.aoc_types as types
 import numpy as np
 import sympy
 import itertools

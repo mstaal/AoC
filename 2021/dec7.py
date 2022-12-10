@@ -3,7 +3,7 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 
 def calculate_consumption(content, transform=lambda number: number):

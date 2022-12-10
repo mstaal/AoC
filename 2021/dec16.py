@@ -1,5 +1,5 @@
 from functools import reduce
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 
 class Packet:

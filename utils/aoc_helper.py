@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from functools import reduce
-from utils.GlobalVariables import all_directions, all_directions_3d
+from utils.global_variables import all_directions, all_directions_3d, cardinal_directions
 from time import time
 
 

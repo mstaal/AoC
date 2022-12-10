@@ -1,6 +1,6 @@
 import statistics
 
-from utils import AoCHelper as helper
+from utils import aoc_helper as helper
 
 
 def remove_inner(element):
