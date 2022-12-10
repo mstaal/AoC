@@ -2,9 +2,7 @@ from utils import AoCHelper as helper
 from pathlib import Path
 from utils.abcTypes import T
 
-EPSILON = 0.0000001
-
-max_allowed_distance = T(1, 1).length() + EPSILON
+max_allowed_distance = T(1, 1).length()
 
 direction_map = {"U": T(0, 1), "D": T(0, -1), "L": T(-1, 0), "R": T(1, 0)}
 
@@ -23,17 +21,18 @@ def calculate_unique_tail_visits(content_list, rope_length):
                 diff_vector = rope[idx] - rope[idx+1]
                 distance = diff_vector.length()
                 if distance > max_allowed_distance:
+                    x, y = rope[idx]
                     if diff_vector in [T(2, 0), T(2, 1), T(2, -1)]:
-                        rope[idx+1] = T(rope[idx][0]-1, rope[idx][1])
+                        rope[idx+1] = T(x-1, y)
                     elif diff_vector in [T(0, 2), T(1, 2), T(-1, 2)]:
-                        rope[idx+1] = T(rope[idx][0], rope[idx][1]-1)
+                        rope[idx+1] = T(x, y-1)
                     elif diff_vector in [T(-2, 0), T(-2, 1), T(-2, -1)]:
-                        rope[idx+1] = T(rope[idx][0]+1, rope[idx][1])
+                        rope[idx+1] = T(x+1, y)
                     elif diff_vector in [T(0, -2), T(1, -2), T(-1, -2)]:
-                        rope[idx+1] = T(rope[idx][0], rope[idx][1]+1)
+                        rope[idx+1] = T(x, y+1)
                     else:
-                        diagonal_direction = next(d for d in diagonal_directions if
-                                                  (rope[idx] - (rope[idx+1] + d)).length() < max_allowed_distance)
+                        def is_close_to_diagonal(d): return (rope[idx] - (rope[idx+1] + d)).length() <= max_allowed_distance
+                        diagonal_direction = next(d for d in diagonal_directions if is_close_to_diagonal(d))
                         rope[idx+1] = rope[idx+1] + diagonal_direction
                 tail_memory[idx+1].add(rope[idx+1])
     return len(tail_memory[rope_length])
