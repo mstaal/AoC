@@ -31,9 +31,8 @@ def calculate_unique_tail_visits(content_list, rope_length):
                     elif diff_vector in [T(0, -2), T(1, -2), T(-1, -2)]:
                         rope[idx+1] = T(x, y+1)
                     else:
-                        def on_to_diagonal(d): return (rope[idx] - (rope[idx+1] + d)).length() <= max_allowed_distance
-                        diagonal_direction = next(d for d in diagonal_directions if on_to_diagonal(d))
-                        rope[idx+1] = rope[idx+1] + diagonal_direction
+                        def on_diagonal(d): return (rope[idx] - (rope[idx+1] + d)).length() <= max_allowed_distance
+                        rope[idx+1] = rope[idx+1] + next(d for d in diagonal_directions if on_diagonal(d))
                 tail_memory[idx+1].add(rope[idx+1])
     return len(tail_memory[rope_length])
 
