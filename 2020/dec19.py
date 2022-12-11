@@ -62,7 +62,7 @@ def generateRegex(rulesList):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day19.txt", "\n\n")
+    content = helper.split_file("day19.txt", "\n\n")
     rules = {int(element[0]): element[1].replace("\"", "") for element in [element.split(": ") for element in content[0].split("\n")]}
     messages = content[1].split("\n")
 

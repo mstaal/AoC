@@ -18,7 +18,7 @@ signLambda = lambda letter: 1 if letter == "R" else -1
 
 
 def redefineBasedOnMask(value, mask, conditionList):
-    valueBinary = list(helper.baseToBinary(value, 10).zfill(len(mask)))
+    valueBinary = list(helper.base_to_binary(value, 10).zfill(len(mask)))
     for idx, character in enumerate(mask):
         valueBinary[idx] = character if character in conditionList else valueBinary[idx]
     return valueBinary
@@ -29,7 +29,7 @@ def firstExercise(splitted):
         mask = element[0]
         for mapping in element[1:]:
             key, value = [int(element) for element in mapping.split(" = ")]
-            dict[key] = helper.baseToBase10("".join(redefineBasedOnMask(value, mask, ["0", "1"])))
+            dict[key] = helper.base_to_base10("".join(redefineBasedOnMask(value, mask, ["0", "1"])))
     summing = sum(dict.values())
     return summing
 
@@ -52,7 +52,7 @@ def secondExercise(splitted):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day14.txt", "\nmask = ")
+    content = helper.split_file("day14.txt", "\nmask = ")
     content[0] = content[0].replace("mask = ", "")
     content = [text.replace("mem[", "").replace("]", "") for text in content]
     splitted = [element.split("\n") for element in content]

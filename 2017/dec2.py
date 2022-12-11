@@ -38,7 +38,7 @@ def question2Count(content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [element for element in helper.splitFile("day2.txt", "\n")]
+    content = [element for element in helper.split_file("day2.txt", "\n")]
     result1 = question1Count(content)
     result2 = question2Count(content)
 

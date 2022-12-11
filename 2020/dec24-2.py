@@ -68,7 +68,7 @@ def walk(matches):
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
     # Part 1
-    content = helper.splitFile("day24.txt", "\n")
+    content = helper.split_file("day24.txt", "\n")
     regex = "(e|se|sw|w|nw|ne)"
     matches = [regexSplitter(element, regex) for element in content]
     coordinates = walk(matches)

@@ -29,7 +29,7 @@ def countYesStrict(group):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day6.txt", "\n\n")
+    content = helper.split_file("day6.txt", "\n\n")
 
     count = 0
     for element in content:

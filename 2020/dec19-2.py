@@ -57,7 +57,7 @@ def generateCustomRegex(rules, repeat):
 
 
 def calculate():
-    content = helper.splitFile("day19.txt", "\n\n")
+    content = helper.split_file("day19.txt", "\n\n")
     rules = {int(element[0]): element[1].replace("\"", "") for element in
              [element.split(": ") for element in content[0].split("\n")]}
     rules = {key: [element.split(" ") for element in value.split(" | ")] for key, value in rules.items()}

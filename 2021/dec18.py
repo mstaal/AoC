@@ -99,7 +99,7 @@ def magnitude(result):
 
 
 if __name__ == '__main__':
-    content = [json.loads(element) for element in helper.splitFile("day18.txt", "\n")]
+    content = [json.loads(element) for element in helper.split_file("day18.txt", "\n")]
     added = add_all(content)
     result1 = magnitude(added)
     print(f"Result 1: {str(result1)}")

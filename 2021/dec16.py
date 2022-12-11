@@ -153,7 +153,7 @@ def generate_packet(binary):
 
 
 if __name__ == '__main__':
-    content = [element for element in helper.splitFile("day16.txt", "\n")][0]
+    content = [element for element in helper.split_file("day16.txt", "\n")][0]
     binary = ''.join([hex_to_bin(char) for char in content])
     packet = generate_packet(binary)
     summ = packet.get_version_sum()

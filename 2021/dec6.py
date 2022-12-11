@@ -61,7 +61,7 @@ def countOp(number, days):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [int(element) for element in helper.splitFile("day6.txt", ",")]
+    content = [int(element) for element in helper.split_file("day6.txt", ",")]
 
     print("Start 1:")
     #result = sum([countOp(element, 80) for element in content])

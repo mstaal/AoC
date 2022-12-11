@@ -45,7 +45,7 @@ def firstExercise(dict, coordinates, count):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day17.txt", "\n")
+    content = helper.split_file("day17.txt", "\n")
     origin = (0, 0, 0, 0)
     interval = (-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
     coordinates = set(itertools.product(interval, repeat=len(origin)))

@@ -1,5 +1,6 @@
 import itertools
 import re
+import urllib.parse
 from pathlib import Path
 
 import numpy as np
@@ -142,11 +143,11 @@ def stringIndexLoop(text, index):
     return divmod(index, len(text))[1]
 
 
-def splitFile(file, sep):
+def split_file(file, sep):
     return Path(file).read_text(encoding="UTF-8").split(sep)
 
 
-def binaryParse(word, letter):
+def binary_parse(word, letter):
     number = 0
     for idx, val in enumerate(str(word)):
         factor = 2 ** (len(word) - 1 - idx)
@@ -158,11 +159,11 @@ def contains_any(element, condition_collection):
     return any(element.__contains__(sub) for sub in condition_collection)
 
 
-def flatten(lst):
+def flatten(lst: list):
     return [item for sublist in lst for item in sublist]
 
 
-def reverse_dict(dictionary):
+def reverse_dict(dictionary: dict):
     return {value: key for key, value in dictionary.items()}
 
 
@@ -174,15 +175,15 @@ def combinations(element, repeat=None):
     return [x for x in itertools.product(element, repeat=repeat if repeat is not None else len(element))]
 
 
-def baseToBinary(number, base=16):
+def base_to_binary(number, base=16):
     return bin(int(str(number), base))[2:]
 
 
-def baseToHex(number, base=2):
+def base_to_hex(number, base=2):
     return hex(int(number, base))
 
 
-def baseToBase10(number, base=2):
+def base_to_base10(number, base=2):
     return int(str(number), base)
 
 
@@ -194,11 +195,11 @@ def replace_nth(text, sub, wanted, n):
     return new_string
 
 
-def gcdExtended(a, b):
+def gcd_extended(a, b):
     # Base Case
     if a == 0:
         return b, 0, 1
-    gcd, x1, y1 = gcdExtended(b % a, a)
+    gcd, x1, y1 = gcd_extended(b % a, a)
     # Update x and y using results of recursive call
     x = y1 - (b // a) * x1
     y = x1
@@ -210,7 +211,11 @@ def chinese_remainder(n, a):
     prod = reduce(lambda a, b: a * b, n)
     for n_i, a_i in zip(n, a):
         p = prod // n_i
-        gcd, x, y = gcdExtended(n_i, p)
+        gcd, x, y = gcd_extended(n_i, p)
         sum += a_i * y * p
     result = sum % prod
     return result
+
+
+def wolfram_alpha_query(equation):
+    return f"https://www.wolframalpha.com/input?i={urllib.parse.quote(f'{equation}')}"

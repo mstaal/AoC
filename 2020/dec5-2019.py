@@ -21,7 +21,7 @@ def orbit(arg, dict, set, count):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    input = helper.splitFile("test.txt", "\n")
+    input = helper.split_file("test.txt", "\n")
     count = 0
     set = [element[0:3] for element in input]
     dict = {}

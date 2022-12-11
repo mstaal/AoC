@@ -8,7 +8,7 @@ def calculate():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    content = helper.splitFile("test.txt", "\n")
+    content = helper.split_file("test.txt", "\n")
     matrix = [list(element.replace("#", "1").replace(".", "0")) for element in content]
     for flist in matrix:
         for slist in flist:

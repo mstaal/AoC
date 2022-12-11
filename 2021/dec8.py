@@ -28,7 +28,7 @@ def decode(content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [element for element in helper.splitFile("day8.txt", "\n")]
+    content = [element for element in helper.split_file("day8.txt", "\n")]
     exer1content = helper.flatten([element.split(" | ")[1].split(" ") for element in content])
     exer1result = len([elm for elm in exer1content if [2, 3, 4, 7].__contains__(len(elm))])
     print("Result 1: " + str(exer1result))

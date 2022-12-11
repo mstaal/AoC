@@ -42,7 +42,7 @@ def exercise2(content):
 
 
 if __name__ == '__main__':
-    content = [[int(el) for el in element] for element in helper.splitFile("day11.txt", "\n")]
+    content = [[int(el) for el in element] for element in helper.split_file("day11.txt", "\n")]
     print(f"Result 1: {str(exercise1(cc.deepcopy(content)))}")
 
     print(f"Result 2: {str(exercise2(cc.deepcopy(content)))}")

@@ -51,7 +51,7 @@ def secondExercise(numbers, content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [element for element in helper.splitFile("day4.txt", "\n\n")]
+    content = [element for element in helper.split_file("day4.txt", "\n\n")]
     numbers = [int(element) for element in content[0].split(",")]
     boardsList = [[inner.split(" ") for inner in element.split("\n")] for element in content[1:]]
     boards = [([[(int(number), False) for number in lsst if number != ''] for lsst in lst], False, idx) for idx, lst in enumerate(boardsList)]

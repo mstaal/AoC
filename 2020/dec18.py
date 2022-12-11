@@ -9,7 +9,7 @@ add = Infix(lambda x, y: x + y)
 
 
 if __name__ == '__main__':
-    content = helper.splitFile("day18.txt", "\n")
+    content = helper.split_file("day18.txt", "\n")
     firstExercise = sum([eval(element.replace("+", "|add|").replace("*", "|mul|")) for element in content])
     secondExercise = sum([eval(element.replace("*", "|mul|")) for element in content])
     print(f"Result 1: {str(firstExercise)}")

@@ -52,7 +52,7 @@ def secondExercise(content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [list(element) for element in helper.splitFile("day3.txt", "\n")]
+    content = [list(element) for element in helper.split_file("day3.txt", "\n")]
 
     firstExercise(content)
     secondExercise(content)

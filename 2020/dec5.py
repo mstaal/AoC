@@ -13,11 +13,11 @@ from itertools import permutations
 
 
 def rowNumber(word):
-    return helper.baseToBase10(helper.baseToBase10(word[:7].replace("B", "1").replace("F", "0")), 10)
+    return helper.base_to_base10(helper.base_to_base10(word[:7].replace("B", "1").replace("F", "0")), 10)
 
 
 def seatNumber(word):
-    return helper.binaryParse(word[7:], "R")
+    return helper.binary_parse(word[7:], "R")
 
 
 def gap(list):
@@ -31,7 +31,7 @@ def gap(list):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day5.txt", "\n")
+    content = helper.split_file("day5.txt", "\n")
     results = []
 
     for word in content:

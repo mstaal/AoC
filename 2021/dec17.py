@@ -30,7 +30,7 @@ def exercise1(area, velocities):
 
 
 if __name__ == '__main__':
-    content = helper.splitFile("day17.txt", "\n")
+    content = helper.split_file("day17.txt", "\n")
     input = [elm[2:].split("..") for elm in [element.replace("target area: ", "").split(", ") for element in content][0]]
     area = ((int(input[0][0]), int(input[0][1])), (int(input[1][0]), int(input[1][1])))
     velocities = [(x, y) for x in range(0, area[0][1]) for y in range(-abs(area[1][0]), abs(area[1][0]))]

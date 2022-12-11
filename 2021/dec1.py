@@ -8,7 +8,7 @@ from utils import aoc_helper as helper
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [int(element) for element in helper.splitFile("day1.txt", "\n")]
+    content = [int(element) for element in helper.split_file("day1.txt", "\n")]
     question1 = sum([int(content[i] < content[i+1]) for i in range(0, len(content)-1)])
 
     question2 = sum([int(content[i] + content[i+1] + content[i+2] < content[i+1] + content[i+2] + content[i+3]) for i in range(0, len(content)-3)])

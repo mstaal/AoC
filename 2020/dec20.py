@@ -142,7 +142,7 @@ def secondExercise(tilesMeta, square):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day20.txt", "\n\n")
+    content = helper.split_file("day20.txt", "\n\n")
     tiles = {int(element[0].replace("Tile ", "").replace(":", "")): element[1:] for element in [element.split("\n") for element in content]}
     tilesMeta = {key: getMeta(value, key) for key, value in tiles.items()}
     square = int(np.sqrt(len(tiles)))

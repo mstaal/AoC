@@ -38,7 +38,7 @@ def calculateSecond2nd(content, sum, index, changeIdx):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day8.txt", "\n")
+    content = helper.split_file("day8.txt", "\n")
     resOne = calculateFirst(content)
     resultsTwo = [calculateSecond2nd(content.copy(), 0, 0, element) for element in list(range(0, 643))]
     resultsTwoFilter = [element for element in resultsTwo if not element[1]][0][0]

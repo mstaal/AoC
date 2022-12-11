@@ -105,7 +105,7 @@ def joltCombinations(content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [list(element) for element in helper.splitFile("day11.txt", "\n")]
+    content = [list(element) for element in helper.split_file("day11.txt", "\n")]
 
     firstResult = firstExercise(content)[0]
     flat_list = []

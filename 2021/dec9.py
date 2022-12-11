@@ -30,7 +30,7 @@ def part2(content, point, memory={}):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    content = [[int(number) for number in list(element)] for element in helper.splitFile("day9.txt", "\n")]
+    content = [[int(number) for number in list(element)] for element in helper.split_file("day9.txt", "\n")]
     content_dict = helper.to_2d_dict(content)
     low_point_dict = part1(content)
     risks = sum([element + 1 for element in low_point_dict.values()])

@@ -39,7 +39,7 @@ def joltCombinations(content):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [int(element) for element in helper.splitFile("day10.txt", "\n")]
+    content = [int(element) for element in helper.split_file("day10.txt", "\n")]
     content.sort()
 
     resultOne = joltDifferences(content, {}, 0)

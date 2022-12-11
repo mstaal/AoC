@@ -1,4 +1,5 @@
 from utils import aoc_helper as helper
+import urllib.parse
 
 # Chinese remainder theorem
 
@@ -39,13 +40,16 @@ def secondExercise(timeTuples):
     text = text[:-2]
     return text
 
+
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    timestamp, secondLine = helper.splitFile("day13.txt", "\n")
+    timestamp, secondLine = helper.split_file("day13.txt", "\n")
     print(f"Result 1: {firstExercise(int(timestamp), secondLine)}")
 
     calcs = secondCalc(secondLine)
-    print(f"Result 2 (Wolfram): {secondExercise(calcs[1])}")
+    wolfram_equation = secondExercise(calcs[1])
+    print(f"Result 2 (Wolfram): {wolfram_equation}")
+    print(f"Result 2 (Wolfram-query): {helper.wolfram_alpha_query(wolfram_equation)}")
 
     n = [i[0] for i in calcs[1]]
     a = [-1*i[1] for i in calcs[1]]

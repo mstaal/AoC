@@ -19,7 +19,7 @@ def exercise(polymer, insertion_rules, counter):
 
 
 if __name__ == '__main__':
-    polymer, lines_raw = [element for element in helper.splitFile("day14.txt", "\n\n")]
+    polymer, lines_raw = [element for element in helper.split_file("day14.txt", "\n\n")]
     insertion_rules = {element.split(" -> ")[0]: element.split(" -> ")[1] for element in lines_raw.split("\n")}
 
     print(f"Result 1: {str(exercise(polymer, insertion_rules, 10))}")

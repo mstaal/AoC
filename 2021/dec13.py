@@ -16,7 +16,7 @@ def exercise(coordinates, folds):
 
 
 if __name__ == '__main__':
-    coordinates_content, fold_content = [element for element in helper.splitFile("day13.txt", "\n\n")]
+    coordinates_content, fold_content = [element for element in helper.split_file("day13.txt", "\n\n")]
     coordinates = set((int(elm.split(",")[0]), int(elm.split(",")[1])) for elm in coordinates_content.split("\n"))
     folds = [(c[-1], int(number)) for c, number in [elm.split("=") for elm in fold_content.split("\n")]]
 

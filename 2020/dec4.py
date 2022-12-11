@@ -73,7 +73,7 @@ def isValidPassportStrict(passport):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day4.txt", "\n\n")
+    content = helper.split_file("day4.txt", "\n\n")
 
     count = 0
     for passport in content:

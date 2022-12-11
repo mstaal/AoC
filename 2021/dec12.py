@@ -26,7 +26,7 @@ def exercise(map, lowercase_limit):
 
 
 if __name__ == '__main__':
-    content = [element.split("-") for element in helper.splitFile("day12.txt", "\n")]
+    content = [element.split("-") for element in helper.split_file("day12.txt", "\n")]
     map = {x[0]: set(y[1] for y in content if x[0] == y[0]) for x in content}
     map.update({x[1]: map.get(x[1], set()).union(set(y[0] for y in content if x[1] == y[1])) for x in content})
     map = {k: set(filter(lambda x: x != "start", v)) for k, v in map.items()}

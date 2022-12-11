@@ -90,7 +90,7 @@ def generateCommaText(mapping):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day21.txt", "\n")
+    content = helper.split_file("day21.txt", "\n")
     data = [(ingredients.split(" "), allergens.replace("contains ", "").replace(")", "").split(", ")) for
             ingredients, allergens in [element.split(" (") for element in content]]
     foodDict, allergensDict = generateDicts(data)

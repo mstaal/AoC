@@ -22,7 +22,7 @@ def transformSubject(subject, loopsize):
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
     # Part 1
-    content = [int(element) for element in helper.splitFile("day25.txt", "\n")]
+    content = [int(element) for element in helper.split_file("day25.txt", "\n")]
     card = content[0]
     door = content[1]
     encryptionDoor = transformSubject(door, getLoopSize(7, card))

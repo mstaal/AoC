@@ -36,7 +36,7 @@ def playgame_2(players, current, dice_num, remaining):
     return "res1"
 
 if __name__ == '__main__':
-    content = [e.split(" starting position: ") for e in helper.splitFile("day21.txt", "\n")]
+    content = [e.split(" starting position: ") for e in helper.split_file("day21.txt", "\n")]
     player1 = {"player": content[0][0], "current": int(content[0][1]), "points": 0}
     player2 = {"player": content[1][0], "current": int(content[1][1]), "points": 0}
     players = {"P1": player1, "P2": player2}

@@ -40,7 +40,7 @@ def putLayersTogether(slices):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    input = helper.splitFile("test.txt", "\n")[0]
+    input = helper.split_file("test.txt", "\n")[0]
     pixelCount = 25*6
     slicing = [input[i: i + pixelCount] for i in range(0, len(input), pixelCount)]
     mult = getMultiple(slicing)

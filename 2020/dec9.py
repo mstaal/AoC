@@ -34,7 +34,7 @@ def relevantMinMax(content, checkFilter):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [int(element) for element in helper.splitFile("day9.txt", "\n")]
+    content = [int(element) for element in helper.split_file("day9.txt", "\n")]
     firstResult = nonValidElements(content, 25)[0]
 
     secondResult = relevantMinMax(content, firstResult)[0]

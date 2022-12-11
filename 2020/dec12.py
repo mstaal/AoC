@@ -43,7 +43,7 @@ def generateSecond(content, coords, dirs, waypoint):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day12.txt", "\n")
+    content = helper.split_file("day12.txt", "\n")
     dirs = ["E", "S", "W", "N"]
     generateFirst(content, "E", {"E": 0, "S": 0, "W": 0, "N": 0}, dirs)
     generateSecond(content, {"E": 0, "S": 0, "W": 0, "N": 0}, dirs, {"E": 10, "N": 1})

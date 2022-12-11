@@ -61,7 +61,7 @@ def dictCount(dict, search, count):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day7.txt", "\n")
+    content = helper.split_file("day7.txt", "\n")
 
     dict = generateDict(content)
     relevant = generateRelevant(dict, keyLookup(dict, "shiny gold"))

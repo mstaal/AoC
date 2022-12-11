@@ -26,7 +26,7 @@ def add(content):
 
 
 if __name__ == '__main__':
-    content = [[int(elm) for elm in element] for element in helper.splitFile("day15.txt", "\n")]
+    content = [[int(elm) for elm in element] for element in helper.split_file("day15.txt", "\n")]
     print(f"Result 1: {str(exercise(content))}")
 
     rotated = np.rot90(np.array(content), k=3).tolist()

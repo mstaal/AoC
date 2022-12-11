@@ -87,7 +87,7 @@ def secondExercise(departure, nearby, myticket, query):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day16.txt", "\n\n")
+    content = helper.split_file("day16.txt", "\n\n")
     departure = content[0].split("\n")
     myticket = [int(el) for el in content[1].split("\n")[1].split(",")]
     nearbyticket = [element.split(",") for element in content[2].split("\n")[1:]]

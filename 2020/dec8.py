@@ -29,7 +29,7 @@ def calculateSecond(content, sum, index, executed):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day8.txt", "\n")
+    content = helper.split_file("day8.txt", "\n")
     resOne = calculateFirst(content)
     listRange = list(range(0, 643))
     for index in listRange:

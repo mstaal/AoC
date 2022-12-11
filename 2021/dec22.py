@@ -26,7 +26,7 @@ def get_ons_ex1(content):
 
 
 if __name__ == '__main__':
-    content = [parseLine(e) for e in helper.splitFile("day22.txt", "\n")]
+    content = [parseLine(e) for e in helper.split_file("day22.txt", "\n")]
     result1 = get_ons_ex1(content)
     hfh = ""
 

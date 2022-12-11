@@ -69,7 +69,7 @@ def exercise2(parsed):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [element for element in helper.splitFile("day5.txt", "\n")]
+    content = [element for element in helper.split_file("day5.txt", "\n")]
     parsed = [parseLine(element) for element in content]
 
     q1 = exercise1(parsed)

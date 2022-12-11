@@ -23,6 +23,7 @@ def apply_once(input, algorithm, v):
     return copy
 
 
+@helper.profiler
 def apply(image, algorithm, times):
     if times <= 0:
         return image
@@ -34,7 +35,7 @@ def apply(image, algorithm, times):
 
 
 if __name__ == '__main__':
-    algorithm, image_raw = helper.splitFile("day20.txt", "\n\n")
+    algorithm, image_raw = helper.split_file("day20.txt", "\n\n")
     algorithm = algorithm.replace("#", str(1)).replace(".", str(0))
     image_raw = image_raw.replace("#", str(1)).replace(".", str(0))
     image = np.array([list(elm) for elm in image_raw.split("\n")]).astype(np.int64)

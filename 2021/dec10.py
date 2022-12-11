@@ -28,7 +28,7 @@ def autocomplete_points(elm):
 
 
 if __name__ == '__main__':
-    content = [element for element in helper.splitFile("day10.txt", "\n")]
+    content = [element for element in helper.split_file("day10.txt", "\n")]
     removed = [remove_inner(element) for element in content]
     is_corrupt_after_removal = lambda el: helper.contains_any(el, [">", ")", "]", "}"])
     corrupted = [el for el in removed if is_corrupt_after_removal(el)]

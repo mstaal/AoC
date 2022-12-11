@@ -15,7 +15,7 @@ def calculate_consumption(content, transform=lambda number: number):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = [int(element) for element in helper.splitFile("day7.txt", ",")]
+    content = [int(element) for element in helper.split_file("day7.txt", ",")]
 
     print("Start 1:")
     result = calculate_consumption(content)

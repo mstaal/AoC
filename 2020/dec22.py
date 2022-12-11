@@ -98,7 +98,7 @@ def secondExercise(game):
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
-    content = helper.splitFile("day22.txt", "\n\n")
+    content = helper.split_file("day22.txt", "\n\n")
     game = {element[0]: list(map(lambda x: int(x), element[1:])) for element in [element.split("\n") for element in content]}
     res1 = firstExercise(cc.deepcopy(game))
     res2 = secondExercise(cc.deepcopy(game))
