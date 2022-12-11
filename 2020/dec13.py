@@ -3,57 +3,53 @@ import urllib.parse
 
 # Chinese remainder theorem
 
-signLambda = lambda letter: 1 if letter == "R" else -1
 
-def firstExercise(timestamp, secondLine):
-    result = []
-    resultSecond = []
-    lst = [int(number) for number in secondLine.replace("x,", "").split(",")]
+def first_exercise(min_required_timestamp, second_line):
+    departure_bus_pairs = []
+    lst = [int(number) for number in second_line.replace("x,", "").split(",")]
     for element in lst:
-        sample = [i * element for i in range(0, timestamp)]
-        filter_res = min([i for i in sample if i >= timestamp])
-        result.append((filter_res, element))
-        resultSecond.append(filter_res)
-    mini = min(resultSecond)
-    _, id = list(filter(lambda x: x[0] == mini, result))[0]
-    res = (mini - timestamp) * id
+        sample = [i * element for i in range(0, min_required_timestamp)]
+        filter_res = min([i for i in sample if i >= min_required_timestamp])
+        departure_bus_pairs.append((filter_res, element))
+    minimal_possible_time, bus_id = min(departure_bus_pairs, key=lambda x: x[0])
+    res = (minimal_possible_time - min_required_timestamp) * bus_id
     return res
 
 
-def secondCalc(secondLine):
-    timesMap = {}
-    timeTuples = []
-    times = []
-    lst = [number for number in secondLine.split(",")]
+def second_calc(second_line):
+    time_to_indices = []
+    lst = [number for number in second_line.split(",")]
     for idx, element in enumerate(lst):
         if element != "x":
-            timeTuples.append((int(element), idx))
-            timesMap[int(element)] = idx
-            times.append(int(element))
-    return timesMap, timeTuples, min(times), max(times)
+            time_to_indices.append((int(element), idx))
+    return time_to_indices
 
 
-def secondExercise(timeTuples):
-    text = ""
-    for element in timeTuples:
-        text += "(n + " + str(element[1]) + ") mod " + str(element[0]) + " = 0, "
-    text = text[:-2]
-    return text
+def second_exercise(time_to_indices):
+    crt_equation = ""
+    for time, bus_index in time_to_indices:
+        crt_equation += f"(a + {str(bus_index)}) mod {str(time)} = 0, "
+    chinese_remainder_equation = crt_equation[:-2]
+    return chinese_remainder_equation
+
+
+def second_exercise_alt(time_to_indices):
+    n_bus_index_list = [n for n, _ in time_to_indices]
+    a_time_list = [-1 * a for _, a in time_to_indices]
+    return helper.chinese_remainder(n_bus_index_list, a_time_list)
 
 
 def calculate():
     # Use a breakpoint in the code line below to debug your script.
     timestamp, secondLine = helper.split_file("day13.txt", "\n")
-    print(f"Result 1: {firstExercise(int(timestamp), secondLine)}")
+    print(f"Result 1: {first_exercise(int(timestamp), secondLine)}")
 
-    calcs = secondCalc(secondLine)
-    wolfram_equation = secondExercise(calcs[1])
+    time_to_indices = second_calc(secondLine)
+    wolfram_equation = second_exercise(time_to_indices)
     print(f"Result 2 (Wolfram): {wolfram_equation}")
     print(f"Result 2 (Wolfram-query): {helper.wolfram_alpha_query(wolfram_equation)}")
 
-    n = [i[0] for i in calcs[1]]
-    a = [-1*i[1] for i in calcs[1]]
-    print(f"{helper.chinese_remainder(n, a)}")
+    print(f"Result 2 (Alternative): {second_exercise_alt(time_to_indices)}")
 
 
 if __name__ == '__main__':
