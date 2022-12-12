@@ -157,20 +157,20 @@ class LinkedList:
 
 
 # https://gist.github.com/m00nlight/245d917cb030c515c513
-class Dijkstra:
-    def __init__(self, adjacents):
-        self.adj = adjacents
+class DijkstraGraph:
+    def __init__(self, graph):
+        self.graph = graph
 
     def add_adjacency(self, u, v, weight, weight_opposite=None):
-        self.adj[u] = self.adj.get(u, {})
-        self.adj[v] = self.adj.get(v, {})
-        self.adj[u][v] = weight
-        self.adj[v][u] = weight_opposite if weight_opposite is not None else weight
+        self.graph[u] = self.graph.get(u, {})
+        self.graph[v] = self.graph.get(v, {})
+        self.graph[u][v] = weight
+        self.graph[v][u] = weight_opposite if weight_opposite is not None else weight
 
     def dijkstra(self, start):
         dis, vis, hq = {}, {}, []
 
-        for node in self.adj.keys():
+        for node in self.graph.keys():
             dis[node] = float('inf')
             vis[node] = False
 
@@ -181,9 +181,8 @@ class Dijkstra:
             (d, node) = heappop(hq)
             vis[node] = True
 
-            for n, weight in self.adj[node].items():
+            for n, weight in self.graph[node].items():
                 if (not vis[n]) and (d + weight < dis[n]):
                     dis[n] = d + weight
                     heappush(hq, (dis[n], n))
-
         return dis

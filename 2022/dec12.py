@@ -1,21 +1,21 @@
 from utils import aoc_helper as helper
 from pathlib import Path
 
-from utils.aoc_types import Dijkstra
+from utils.aoc_types import DijkstraGraph
 from utils.global_variables import cardinal_directions
 
 
-def get_dijkstra_graph(content_list, weight_lambda):
-    dijk_graph = {}
+def get_dijkstra_graph(content_list, add_to_graph_condition):
+    graph_structure = {}
     for idx, elm_x in enumerate(content_list):
         for idy, value in enumerate(elm_x):
             adjacent = helper.get_neighbours_dict(content_list, idx, idy, cardinal_directions, True)
             for adj, adj_value in adjacent.items():
-                dijk_graph[(idx, idy)] = dijk_graph.get((idx, idy), {})
-                dijk_graph[adj] = dijk_graph.get(adj, {})
-                if weight_lambda(value, adj_value):
-                    dijk_graph[(idx, idy)][adj] = 1
-    return Dijkstra(dijk_graph)
+                graph_structure[(idx, idy)] = graph_structure.get((idx, idy), {})
+                graph_structure[adj] = graph_structure.get(adj, {})
+                if add_to_graph_condition(value, adj_value):
+                    graph_structure[(idx, idy)][adj] = 1
+    return DijkstraGraph(graph_structure)
 
 
 @helper.profiler

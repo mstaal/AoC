@@ -2,7 +2,7 @@ import numpy as np
 
 from utils import aoc_helper as helper
 from utils.global_variables import cardinal_directions
-from utils.aoc_types import Dijkstra
+from utils.aoc_types import DijkstraGraph
 
 
 def exercise(content):
@@ -15,7 +15,7 @@ def exercise(content):
                 dijk_graph[adj] = dijk_graph.get(adj, {})
                 dijk_graph[(idx, idy)][adj] = dist_to_adj
                 dijk_graph[adj][(idx, idy)] = dist_back
-    dijk = Dijkstra(dijk_graph)
+    dijk = DijkstraGraph(dijk_graph)
     path_length = dijk.dijkstra((0, 0))
     result = path_length[(len(content)-1, len(content)-1)]
     return result
