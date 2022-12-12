@@ -1,5 +1,5 @@
 import math
-from heapq import heappush, heappop
+import heapq
 from queue import PriorityQueue
 
 
@@ -32,13 +32,13 @@ class Infix:
         self.function = function
 
     def __ror__(self, other):
-        return Infix(lambda x, self=self, other=other: self.function(other, x))
+        return Infix(lambda x: self.function(other, x))
 
     def __or__(self, other):
         return self.function(other)
 
     def __rlshift__(self, other):
-        return Infix(lambda x, self=self, other=other: self.function(other, x))
+        return Infix(lambda x: self.function(other, x))
 
     def __rshift__(self, other):
         return self.function(other)
@@ -161,28 +161,50 @@ class DijkstraGraph:
     def __init__(self, graph):
         self.graph = graph
 
-    def add_adjacency(self, u, v, weight, weight_opposite=None):
+    def add_adjacency(self, u, v, weight):
         self.graph[u] = self.graph.get(u, {})
-        self.graph[v] = self.graph.get(v, {})
         self.graph[u][v] = weight
-        self.graph[v][u] = weight_opposite if weight_opposite is not None else weight
 
     def dijkstra(self, start):
-        dis, vis, hq = {}, {}, []
+        distance, visited, hq = {}, {}, []
 
         for node in self.graph.keys():
-            dis[node] = float('inf')
-            vis[node] = False
+            distance[node] = float('inf')
+            visited[node] = False
 
-        dis[start], vis[start] = 0, True
-        heappush(hq, (0, start))
+        distance[start] = 0
+        visited[start] = True
+        heapq.heappush(hq, (0, start))
 
         while hq:
-            (d, node) = heappop(hq)
-            vis[node] = True
+            (min_distance, current_node) = heapq.heappop(hq)
+            visited[current_node] = True
 
-            for n, weight in self.graph[node].items():
-                if (not vis[n]) and (d + weight < dis[n]):
-                    dis[n] = d + weight
-                    heappush(hq, (dis[n], n))
-        return dis
+            for neighbour_node, weight in self.graph[current_node].items():
+                new_distance = min_distance + weight
+                if (not visited[neighbour_node]) and (new_distance < distance[neighbour_node]):
+                    distance[neighbour_node] = new_distance
+                    heapq.heappush(hq, (distance[neighbour_node], neighbour_node))
+        return distance
+
+    def dijkstra_with_path(self, start):
+        node_metadata, visited, hq = {}, {}, []
+
+        for node in self.graph.keys():
+            node_metadata[node] = {"distance": float('inf'), "predecessor": None}
+            visited[node] = False
+
+        node_metadata[start] = {"distance": 0, "predecessor": None}
+        visited[start] = True
+        heapq.heappush(hq, (0, start))
+
+        while hq:
+            (min_distance, current_node) = heapq.heappop(hq)
+            visited[current_node] = True
+
+            for neighbour_node, weight in self.graph[current_node].items():
+                new_distance = min_distance + weight
+                if (not visited[neighbour_node]) and (new_distance < node_metadata[neighbour_node]["distance"]):
+                    node_metadata[neighbour_node] = {"distance": new_distance, "predecessor": current_node}
+                    heapq.heappush(hq, (node_metadata[neighbour_node]["distance"], neighbour_node))
+        return node_metadata

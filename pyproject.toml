@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "aoc"
 version = "0.0.1"
-description = "Hydra is an API for analytical calculations on vessel performance data from the StarConnect project."
-authors = ["StarConnect Analytics <starconnect-analytics@maersk.onmicrosoft.com>"]
+description = "Advent of Code"
+authors = ["Michael <staal@8i.dk>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9.12,<3.12"
 numpy = "*"
+networkx = "*"
 pandas = "*"
 pydantic = "*"
 
