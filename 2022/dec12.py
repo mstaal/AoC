@@ -20,18 +20,15 @@ def get_dijkstra_graph(content_list, add_to_graph_condition):
 
 @helper.profiler
 def part1(numeric, start, end):
-    graph = get_dijkstra_graph(numeric, lambda val, adj_val: adj_val in range(0, val + 2))
-    shortest_lengths_from_start = graph.dijkstra(start)
-    return shortest_lengths_from_start[end]
+    graph = get_dijkstra_graph(numeric, lambda val, adj_val: adj_val < val + 2)
+    return graph.dijkstra(start)[end]
 
 
 @helper.profiler
 def part2(numeric, end):
     numeric_mapping = {(idx, idy): val for idx, row in enumerate(numeric) for idy, val in enumerate(row)}
-    possible_starts = {a for a, val in numeric_mapping.items() if val == 0}
-    graph = get_dijkstra_graph(numeric, lambda val, adj_val: val in range(0, adj_val + 2))
-    minimal_choice = min(graph.dijkstra(end)[start] for start in possible_starts)
-    return minimal_choice
+    graph = get_dijkstra_graph(numeric, lambda val, adj_val: val < adj_val + 2)
+    return min(graph.dijkstra(end)[start] for start in {a for a, val in numeric_mapping.items() if val == 0})
 
 
 if __name__ == '__main__':
