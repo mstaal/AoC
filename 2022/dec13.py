@@ -41,10 +41,7 @@ def __compare_left_right(left, right):
 
 @helper.profiler
 def part1(content_list):
-    right_order_map = {}
-    for idx, (first, second) in enumerate(content_list):
-        right_order_map[idx] = compare_left_right(first, second)
-    return sum(idx+1 for idx, val in right_order_map.items() if val == -1)
+    return sum(idx+1 for idx, (first, second) in enumerate(content_list) if compare_left_right(first, second) == -1)
 
 
 @helper.profiler
