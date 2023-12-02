@@ -12,7 +12,6 @@ def get_dijkstra_graph(content_list, add_to_graph_condition):
             adjacent = helper.get_neighbours_dict(content_list, idx, idy, cardinal_directions, True)
             for adj, adj_value in adjacent.items():
                 graph_structure[(idx, idy)] = graph_structure.get((idx, idy), {})
-                graph_structure[adj] = graph_structure.get(adj, {})
                 if add_to_graph_condition(value, adj_value):
                     graph_structure[(idx, idy)][adj] = 1
     return DijkstraGraph(graph_structure)
@@ -27,8 +26,8 @@ def part1(numeric, start, end):
 @helper.profiler
 def part2(numeric, end):
     numeric_mapping = {(idx, idy): val for idx, row in enumerate(numeric) for idy, val in enumerate(row)}
-    graph = get_dijkstra_graph(numeric, lambda val, adj_val: val < adj_val + 2)
-    return min(graph.dijkstra(end)[start] for start in {a for a, val in numeric_mapping.items() if val == 0})
+    shortest_paths_from_end = get_dijkstra_graph(numeric, lambda val, adj_val: val < adj_val + 2).dijkstra(end)
+    return min(shortest_paths_from_end[start] for start in {a for a, val in numeric_mapping.items() if val == 0})
 
 
 if __name__ == '__main__':

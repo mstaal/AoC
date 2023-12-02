@@ -1,6 +1,5 @@
 import math
 import heapq
-from queue import PriorityQueue
 
 
 class T(tuple):
@@ -23,6 +22,9 @@ class T(tuple):
 
     def length(self):
         return math.sqrt(sum(i*i for i in self))
+
+    def manhattan_length(self):
+        return sum(math.fabs(i) for i in self)
 
 
 # https://code.activestate.com/recipes/384122/
@@ -187,7 +189,7 @@ class DijkstraGraph:
                     heapq.heappush(hq, (distance[neighbour_node], neighbour_node))
         return distance
 
-    def dijkstra_with_path(self, start):
+    def dijkstra_with_path(self, start, weight_transform=lambda graph, current, neighbour, weight: weight):
         node_metadata, visited, hq = {}, {}, []
 
         for node in self.graph.keys():
@@ -199,12 +201,12 @@ class DijkstraGraph:
         heapq.heappush(hq, (0, start))
 
         while hq:
-            (min_distance, current_node) = heapq.heappop(hq)
-            visited[current_node] = True
+            (min_distance, current) = heapq.heappop(hq)
+            visited[current] = True
 
-            for neighbour_node, weight in self.graph[current_node].items():
-                new_distance = min_distance + weight
-                if (not visited[neighbour_node]) and (new_distance < node_metadata[neighbour_node]["distance"]):
-                    node_metadata[neighbour_node] = {"distance": new_distance, "predecessor": current_node}
-                    heapq.heappush(hq, (node_metadata[neighbour_node]["distance"], neighbour_node))
+            for neighbour, weight in self.graph[current].items():
+                new_distance = min_distance + weight_transform(self.graph, current, neighbour, weight)
+                if (not visited[neighbour]) and (new_distance < node_metadata[neighbour]["distance"]):
+                    node_metadata[neighbour] = {"distance": new_distance, "predecessor": (current, node_metadata[current])}
+                    heapq.heappush(hq, (node_metadata[neighbour]["distance"], neighbour))
         return node_metadata
