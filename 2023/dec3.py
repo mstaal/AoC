@@ -18,16 +18,17 @@ def question_1(cnt: list[str], flttnd_number_matches: list) -> int:
 
 
 def question_2(cnt: list[str], flttnd_number_matches: list) -> int:
-    star_matches_dict = dict()
+    star_matches_dict = defaultdict(set)
     for idx, (y_start, y_end), number_match in flttnd_number_matches:
         for idy in range(y_start, y_end):
             neighbours = helper.get_neighbours_dict(cnt, idx, idy, ignore_none=True)
             for (n_x, n_y), character in neighbours.items():
                 if character == "*":
-                    star_matches_dict[(idx, (y_start, y_end), number_match)] = (n_x, n_y)
+                    star_matches_dict[(idx, (y_start, y_end), number_match)].add((n_x, n_y))
     groups = defaultdict(list)
-    for (_, (_, _), number_match), star_point in star_matches_dict.items():
-        groups[star_point].append(number_match)
+    for (_, (_, _), number_match), star_points in star_matches_dict.items():
+        for p in star_points:
+            groups[p].append(number_match)
     return sum([x[0] * x[1] for x in groups.values() if len(x) == 2])
 
 
