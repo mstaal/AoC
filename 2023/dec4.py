@@ -20,12 +20,11 @@ def question_1(inp: list[tuple[int, int]]) -> int:
 
 
 def question_2(inp: list[tuple[int, int]]) -> int:
-    card_occurence_count = [1] * len(inp)
+    card_occurrence_count = [1] * len(inp)
     for card_no, number_of_winning_numbers in inp:
-        next_numbers = range(card_no+1, card_no+1+number_of_winning_numbers)
-        for n in next_numbers:
-            card_occurence_count[n-1] += card_occurence_count[card_no-1]
-    return sum(card_occurence_count)
+        for n in range(card_no+1, card_no+1+number_of_winning_numbers):
+            card_occurrence_count[n-1] += card_occurrence_count[card_no-1]
+    return sum(card_occurrence_count)
 
 
 if __name__ == '__main__':
