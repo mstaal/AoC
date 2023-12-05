@@ -2,6 +2,7 @@ from typing import Callable
 
 from utils import aoc_helper as helper
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, wait
 import numpy as np
 
 
@@ -43,11 +44,16 @@ def question_1(sds: list[int], mppg: Callable) -> int:
 @helper.profiler
 def question_2(sds: list[int], mppg: Callable) -> int:
     pairs = [tuple(sds[i:i + 2]) for i in range(0, len(sds), 2)]
-    candidates = set()
-    for p_start, p_length in pairs:
-        calc = np.min(mppg(np.arange(p_start, p_start+p_length)))
-        candidates.add(calc)
-    result = min(candidates)
+
+    def process_element(start, length):
+        return np.min(mppg(np.arange(start, start+length)))
+
+    with ThreadPoolExecutor(max_workers=len(pairs)) as executor:
+        futures = [executor.submit(process_element, start, length) for (start, length) in pairs]
+        # Wait for all tasks to complete
+        wait(futures)
+        # Get the results from the completed tasks
+        result = np.min([future.result() for future in futures])
     return result
 
 
