@@ -1,47 +1,54 @@
+from typing import Callable
+
 from utils import aoc_helper as helper
 from pathlib import Path
+import numpy as np
 
 
-def parse_content(cnt) -> tuple[list[int], list]:
+def parse_content(cnt) -> tuple[list[int], Callable]:
     seed_line, remainder = cnt[0], cnt[1:]
     seeds = [int(e) for e in seed_line.split(": ")[1].split(" ")]
     lines = [[x for x in e.split("\n") if x != ""] for e in remainder]
 
-    def parse_part(part):
-        name = part[0].replace(" map:", "").strip()
+    def parse_part(part, minimum):
         mappings_list = [tuple(int(x) for x in e.split(" ")) for e in part[1:]]
-        ranges = [(range(x, x+length), range(y, y+length)) for (y, x, length) in mappings_list]
+        ranges = sorted([((x, x+length), (y, y+length)) for (y, x, length) in mappings_list], key=lambda x: x[0][0])
+        if minimum < ranges[0][0][1]:
+            ranges = [((minimum, ranges[0][0][1]), (minimum, ranges[0][0][1]))] + ranges
 
-        def mapping(x):
-            for idx, (x_range, y_range) in enumerate(ranges):
-                if x in x_range:
-                    result = y_range.start + x - x_range.start
-                    return result
-            return x
-        return mapping
-    mappings = [parse_part(line) for line in lines]
-    return seeds, mappings
+        for idx, ((current, _), _) in enumerate(ranges[1:]):
+            (_, previous), _ = ranges[idx]
+            if previous < current:
+                ranges.append(((previous, current), (previous, current)))
+        ranges = sorted([(x, y) for (x, y) in ranges], key=lambda x: x[0][0])
+
+        def m(x):
+            return np.interp(x, [itm for (x, y) in ranges for itm in x], [itm for (x, y) in ranges for itm in y])
+
+        return m
+    mappings = [parse_part(line, min(seeds)) for line in lines]
+
+    def mapping(x):
+        for m in mappings:
+            x = m(x)
+        return x
+    return seeds, mapping
 
 
-def question_1(sds: list[int], mppgs: list) -> int:
-    locations = []
-    for s in sds:
-        for m in mppgs:
-            s = m(s)
-        locations.append(s)
-    return min(locations)
+def question_1(sds: list[int], mppg: Callable) -> int:
+    result = min(mppg(sds))
+    return result
 
 
-def question_2(sds: list[int], mppgs: list) -> int:
+@helper.profiler
+def question_2(sds: list[int], mppg: Callable) -> int:
     pairs = [tuple(sds[i:i + 2]) for i in range(0, len(sds), 2)]
-    seed_ranges = set.union(*[set(range(x, x+length)) for (x, length) in pairs])
-    locations = []
-    for r in seed_ranges:
-        for x in r:
-            for m in mppgs:
-                x = m(x)
-            locations.append(x)
-    return min(locations)
+    candidates = set()
+    for p_start, p_length in pairs:
+        calc = np.min(mppg(np.arange(p_start, p_start+p_length)))
+        candidates.add(calc)
+    result = min(candidates)
+    return result
 
 
 if __name__ == '__main__':
