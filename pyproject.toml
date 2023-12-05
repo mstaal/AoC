@@ -9,6 +9,7 @@ python = ">=3.9.12,<3.12"
 numpy = "*"
 networkx = "*"
 pandas = "*"
+scipy = "*"
 pydantic = "*"
 
 
