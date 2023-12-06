@@ -2,10 +2,12 @@ import itertools
 import re
 import urllib.parse
 from pathlib import Path
+from typing import Callable
 
 import numpy as np
 import pandas as pd
 from functools import reduce
+from concurrent.futures import ThreadPoolExecutor, wait
 from utils.global_variables import all_directions, all_directions_3d, cardinal_directions
 from time import time
 
@@ -218,3 +220,14 @@ def chinese_remainder(n, a):
 
 def wolfram_alpha_query(equation):
     return f"https://www.wolframalpha.com/input?i={urllib.parse.quote(f'{equation}')}"
+
+
+def parallel(max_workers: int, process_element: Callable, args: list[tuple]):
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(process_element, *arg) for arg in args]
+        # Wait for all tasks to complete
+        wait(futures)
+        # Get the results from the completed tasks
+        results = [future.result() for future in futures]
+    return results

@@ -2,7 +2,6 @@ from typing import Callable
 
 from utils import aoc_helper as helper
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, wait
 import numpy as np
 
 
@@ -30,8 +29,10 @@ def parse_content(cnt) -> tuple[list[int], Callable]:
             return np.interp(x, [itm for (xe, _) in rg for itm in xe], [itm for (x, ye) in rg for itm in ye])
         return m
 
+    mappings = [create_individual_map(rg) for rg in map_ranges]
+
     def mapping(x):
-        for m in [create_individual_map(rg) for rg in map_ranges]:
+        for m in mappings:
             x = m(x)
         return x
     return seeds, mapping
@@ -46,16 +47,11 @@ def question_1(sds: list[int], mppg: Callable) -> int:
 def question_2(sds: list[int], mppg: Callable) -> int:
     pairs = [tuple(sds[i:i + 2]) for i in range(0, len(sds), 2)]
 
-    def process_element(start, length):
+    def worker(start, length):
         return np.min(mppg(np.arange(start, start+length)))
 
-    with ThreadPoolExecutor(max_workers=len(pairs)) as executor:
-        futures = [executor.submit(process_element, start, length) for (start, length) in pairs]
-        # Wait for all tasks to complete
-        wait(futures)
-        # Get the results from the completed tasks
-        result = np.min([future.result() for future in futures])
-    return result
+    paralell_result = helper.parallel(len(pairs), worker, pairs)
+    return min(paralell_result)
 
 
 if __name__ == '__main__':
