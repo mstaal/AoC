@@ -11,26 +11,27 @@ def parse_content(cnt) -> tuple[list[int], Callable]:
     seeds = [int(e) for e in seed_line.split(": ")[1].split(" ")]
     lines = [[x for x in e.split("\n") if x != ""] for e in remainder]
 
-    def parse_part(part, minimum):
-        mappings_list = [tuple(int(x) for x in e.split(" ")) for e in part[1:]]
-        ranges = sorted([((x, x+length), (y, y+length)) for (y, x, length) in mappings_list], key=lambda x: x[0][0])
-        if minimum < ranges[0][0][1]:
-            ranges = [((minimum, ranges[0][0][1]), (minimum, ranges[0][0][1]))] + ranges
+    mappings_list = [[tuple(int(x) for x in e.split(" ")) for e in part[1:]] for part in lines]
+    map_ranges = [sorted([((x, x+length), (y, y+length)) for (y, x, length) in m], key=lambda x: x[0][0]) for m in mappings_list]
+    minimum = min(seeds)
+    for rg in map_ranges:
+        if minimum < rg[0][0][0]:
+            rg.insert(0, ((minimum, rg[0][0][0]), (minimum, rg[0][0][0])))
 
-        for idx, ((current, _), _) in enumerate(ranges[1:]):
-            (_, previous), _ = ranges[idx]
+        for idx, ((current, _), _) in enumerate(rg[1:]):
+            (_, previous), _ = rg[idx]
             if previous < current:
-                ranges.append(((previous, current), (previous, current)))
-        ranges = sorted([(x, y) for (x, y) in ranges], key=lambda x: x[0][0])
+                rg.append(((previous, current), (previous, current)))
 
+        rg.sort(key=lambda x: x[0][0])
+
+    def create_individual_map(rg):
         def m(x):
-            return np.interp(x, [itm for (x, y) in ranges for itm in x], [itm for (x, y) in ranges for itm in y])
-
+            return np.interp(x, [itm for (xe, _) in rg for itm in xe], [itm for (x, ye) in rg for itm in ye])
         return m
-    mappings = [parse_part(line, min(seeds)) for line in lines]
 
     def mapping(x):
-        for m in mappings:
+        for m in [create_individual_map(rg) for rg in map_ranges]:
             x = m(x)
         return x
     return seeds, mapping
