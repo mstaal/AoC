@@ -36,13 +36,6 @@ def value_of_card(cards: str):
     return tuple([main_value_of_card(cards)] + [ORDER[c] for c in cards])
 
 
-def question_1(lines: list[tuple[str, int]]) -> int:
-    card_values = [(card, value_of_card(card), bid) for card, bid in lines]
-    sorted_cards = sorted(card_values, key=lambda x: x[1])
-    order_of_strengths = sum([(idx+1)*bid for idx, (_, _, bid) in enumerate(sorted_cards)])
-    return order_of_strengths
-
-
 def value_of_card_j(cards: str):
     hand_without_js = "".join([c for c in cards if c != "J"])
     hands = [f"""{hand_without_js}{"".join(com)}""" for com in product(list(ORDER_J.keys()), repeat=cards.count("J"))]
@@ -51,12 +44,20 @@ def value_of_card_j(cards: str):
     return card_ranking
 
 
-@helper.profiler
-def question_2(lines: list[tuple[str, int]]) -> int:
-    card_values = [(card, value_of_card_j(card), bid) for card, bid in lines]
+def compute_total_winning(lines: list[tuple[str, int]], card_ranking: callable) -> int:
+    card_values = [(card, card_ranking(card), bid) for card, bid in lines]
     sorted_cards = sorted(card_values, key=lambda x: x[1])
     order_of_strengths = sum([(idx + 1) * bid for idx, (_, _, bid) in enumerate(sorted_cards)])
     return order_of_strengths
+
+
+def question_1(lines: list[tuple[str, int]]) -> int:
+    return compute_total_winning(lines, value_of_card)
+
+
+@helper.profiler
+def question_2(lines: list[tuple[str, int]]) -> int:
+    return compute_total_winning(lines, value_of_card_j)
 
 
 if __name__ == '__main__':
