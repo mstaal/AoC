@@ -14,7 +14,7 @@ def parse_content(cnt):
     return parsed
 
 
-def value_of_card(cards: str):
+def main_value_of_card(cards: str):
     counts = Counter(cards)
     if 5 in counts.values():
         main = 7
@@ -30,30 +30,33 @@ def value_of_card(cards: str):
         main = 2
     else:
         main = 1
-    card_ranking = tuple([main] + [ORDER[c] for c in cards])
-    return cards, card_ranking
+    return main
+
+
+def value_of_card(cards: str):
+    return tuple([main_value_of_card(cards)] + [ORDER[c] for c in cards])
 
 
 def question_1(lines: list[tuple[str, int]]) -> int:
-    card_values = [(value_of_card(card), bid) for card, bid in lines]
-    sorted_cards = sorted(card_values, key=lambda x: x[0][1])
-    order_of_strengths = sum([(idx+1)*bid for idx, (_, bid) in enumerate(sorted_cards)])
+    card_values = [(card, value_of_card(card), bid) for card, bid in lines]
+    sorted_cards = sorted(card_values, key=lambda x: x[1])
+    order_of_strengths = sum([(idx+1)*bid for idx, (_, _, bid) in enumerate(sorted_cards)])
     return order_of_strengths
 
 
 def value_of_card_j(cards: str):
     hand_without_js = "".join([c for c in cards if c != "J"])
     hands = [f"""{hand_without_js}{"".join(com)}""" for com in product(list(ORDER_J.keys()), repeat=cards.count("J"))]
-    main = max([value_of_card(h)[1][0] for h in hands])
+    main = max([main_value_of_card(h) for h in hands])
     card_ranking = tuple([main] + [ORDER_J.get(c, 0) for c in cards])
-    return cards, card_ranking
+    return card_ranking
 
 
 @helper.profiler
 def question_2(lines: list[tuple[str, int]]) -> int:
-    card_values = [(value_of_card_j(card), bid) for card, bid in lines]
-    sorted_cards = sorted(card_values, key=lambda x: x[0][1])
-    order_of_strengths = sum([(idx + 1) * bid for idx, (_, bid) in enumerate(sorted_cards)])
+    card_values = [(card, value_of_card_j(card), bid) for card, bid in lines]
+    sorted_cards = sorted(card_values, key=lambda x: x[1])
+    order_of_strengths = sum([(idx + 1) * bid for idx, (_, _, bid) in enumerate(sorted_cards)])
     return order_of_strengths
 
 
