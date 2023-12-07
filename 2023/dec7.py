@@ -9,8 +9,7 @@ ORDER_J = {k: v for k, v in ORDER.items() if k != "J"}
 
 
 def parse_content(cnt):
-    parsed = [[x for x in c.split(" ")] for c in cnt]
-    parsed = [(c[0], int(c[1])) for c in parsed]
+    parsed = [(c[0], int(c[1])) for c in [[x for x in c.split(" ")] for c in cnt]]
     return parsed
 
 
