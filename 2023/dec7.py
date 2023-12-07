@@ -1,11 +1,11 @@
 from utils import aoc_helper as helper
 from pathlib import Path
-from math import sqrt, ceil, floor
-import numpy as np
+from itertools import product
 from collections import Counter
 
 
 ORDER = {"A": 13, "K": 12, "Q": 11, "J": 10, "T": 9, "9": 8, "8": 7, "7": 6, "6": 5, "5": 4, "4": 3, "3": 2, "2": 1}
+ORDER_J = {k: v for k, v in ORDER.items() if k != "J"}
 
 
 def parse_content(cnt):
@@ -41,10 +41,20 @@ def question_1(lines: list[tuple[str, int]]) -> int:
     return order_of_strengths
 
 
+def value_of_card_j(cards: str):
+    hand_without_js = "".join([c for c in cards if c != "J"])
+    hands = [f"""{hand_without_js}{"".join(com)}""" for com in product(list(ORDER_J.keys()), repeat=cards.count("J"))]
+    main = max([value_of_card(h)[1][0] for h in hands])
+    card_ranking = tuple([main] + [ORDER_J.get(c, 0) for c in cards])
+    return cards, card_ranking
+
+
 @helper.profiler
 def question_2(lines: list[tuple[str, int]]) -> int:
-    card_values = [(value_of_card(card), bid) for card, bid in lines]
-    return result
+    card_values = [(value_of_card_j(card), bid) for card, bid in lines]
+    sorted_cards = sorted(card_values, key=lambda x: x[0][1])
+    order_of_strengths = sum([(idx + 1) * bid for idx, (_, bid) in enumerate(sorted_cards)])
+    return order_of_strengths
 
 
 if __name__ == '__main__':
