@@ -231,3 +231,9 @@ def parallel(max_workers: int, process_element: Callable, args: list[tuple]):
         # Get the results from the completed tasks
         results = [future.result() for future in futures]
     return results
+
+
+def pairwise(iterable):
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return zip(a, b)
