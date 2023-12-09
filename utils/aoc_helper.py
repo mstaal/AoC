@@ -233,7 +233,7 @@ def parallel(max_workers: int, process_element: Callable, args: list[tuple]):
     return results
 
 
-def pairwise(iterable):
+def pairwise(iterable: iter):
     a, b = itertools.tee(iterable)
     next(b, None)
     return zip(a, b)
