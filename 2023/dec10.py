@@ -51,6 +51,7 @@ def question_2(distance: int, dijk: DijkstraGraph, start: tuple[int, int], end: 
     path_alt = dijk_alternative.dijkstra_with_path(start)[end]
     cycle = path + list(reversed(path_alt))
 
+    # Pick's theorem: https://en.wikipedia.org/wiki/Pick%27s_theorem
     interior_count = int(Polygon(cycle).area - distance + 1)
     return interior_count
 
