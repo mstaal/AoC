@@ -35,6 +35,7 @@ def value_of_card_j(cards: str):
     return tuple([max([main_value_of_card(h) for h in hands])] + [ORDER_J[c] for c in cards])
 
 
+@helper.profiler
 def compute_total_winning(lines: list[tuple[str, int]], card_ranking: callable) -> int:
     card_values = [(card_ranking(card), bid) for card, bid in lines]
     order_of_strengths = sum([(idx + 1) * bid for idx, (_, bid) in enumerate(sorted(card_values))])
@@ -44,7 +45,5 @@ def compute_total_winning(lines: list[tuple[str, int]], card_ranking: callable) 
 if __name__ == '__main__':
     content = [(c[0], int(c[1])) for c in [[x for x in c.split(" ")] for c in Path("data/day7.txt").read_text(encoding="UTF-8").split("\n")]]
 
-    question1 = compute_total_winning(content, value_of_card)
-    print(f"Result 1: {str(question1)}")
-    question2 = compute_total_winning(content, value_of_card_j)
-    print(f"Result 2: {str(question2)}")
+    print(f"Result 1: {str(compute_total_winning(content, value_of_card))}")
+    print(f"Result 2: {str(compute_total_winning(content, value_of_card_j))}")
