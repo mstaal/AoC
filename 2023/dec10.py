@@ -58,7 +58,7 @@ def question_2(parsed: list[list[str]]) -> int:
     path_alt = dijk_alternative.dijkstra_with_path(start)[end]
     cycle = path + list(reversed(path_alt))
 
-    interior_count = Polygon(cycle).area - distance + 1
+    interior_count = int(Polygon(cycle).area - distance + 1)
     return interior_count
 
 
