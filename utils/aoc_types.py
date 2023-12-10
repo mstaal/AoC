@@ -209,4 +209,20 @@ class DijkstraGraph:
                 if (not visited[neighbour]) and (new_distance < node_metadata[neighbour]["distance"]):
                     node_metadata[neighbour] = {"distance": new_distance, "predecessor": (current, node_metadata[current])}
                     heapq.heappush(hq, (node_metadata[neighbour]["distance"], neighbour))
-        return node_metadata
+        return DijkstraGraphResult(node_metadata)
+
+
+class DijkstraGraphResult:
+    def __init__(self, graph: dict):
+        self.graph = graph
+
+    def __getitem__(self, end):
+        node_metadata = self.graph[end]
+        path = [end]
+        current = node_metadata["predecessor"]
+        while current:
+            coor, metadata = current
+            path.append(coor)
+            current = metadata["predecessor"]
+        path.reverse()
+        return path
