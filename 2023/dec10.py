@@ -33,6 +33,7 @@ def get_dijkstra_graph(parsed: list[list[str]]) -> tuple[DijkstraGraph, tuple[in
     return dijk, start
 
 
+@helper.profiler
 def question_1(parsed: list[list[str]]) -> tuple[int, DijkstraGraph, tuple[int, int], tuple[int, int]]:
     dijk, start = get_dijkstra_graph(parsed)
     starts = dijk.dijkstra(start)
@@ -43,12 +44,11 @@ def question_1(parsed: list[list[str]]) -> tuple[int, DijkstraGraph, tuple[int, 
 
 
 @helper.profiler
-def question_2(parsed: list[list[str]]) -> int:
-    distance, dijk, start, end = question_1(parsed)
+def question_2(distance: int, dijk: DijkstraGraph, start: tuple[int, int], end: tuple[int, int]) -> int:
     path = dijk.dijkstra_with_path(start)[end]
     parsed_altered = deepcopy(parsed)
     parsed_altered[path[-2][0]][path[-2][1]] = "."
-    _, dijk_alternative, _, _ = question_1(parsed_altered)
+    dijk_alternative, _ = get_dijkstra_graph(parsed_altered)
     path_alt = dijk_alternative.dijkstra_with_path(start)[end]
     cycle = path + list(reversed(path_alt))
 
@@ -59,7 +59,7 @@ def question_2(parsed: list[list[str]]) -> int:
 if __name__ == '__main__':
     parsed = [list(c) for c in Path("data/day10.txt").read_text(encoding="UTF-8").split("\n")]
 
-    question1, _, _, _ = question_1(parsed)
-    print(f"Result 1: {str(question1)}")
-    question2 = question_2(parsed)
+    distance, dijk, start, end = question_1(parsed)
+    print(f"Result 1: {str(distance)}")
+    question2 = question_2(distance, dijk, start, end)
     print(f"Result 2: {str(question2)}")
