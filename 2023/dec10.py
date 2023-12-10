@@ -16,19 +16,18 @@ UP = ["|", "7", "F", "S"]
 def get_dijkstra_graph(parsed: list[list[str]]) -> tuple[DijkstraGraph, tuple[int, int]]:
     graph_structure = defaultdict(dict)
     start = None
-    for idx, elm_x in enumerate(parsed):
-        for idy, value in enumerate(elm_x):
-            if value == "S":
-                start = (idx, idy)
-            adjacent = helper.get_neighbours_dict(parsed, idx, idy, cardinal_directions)
-            if value in LEFT and adjacent.get((idx, idy+1), None) in RIGHT:
-                graph_structure[(idx, idy)][(idx, idy+1)] = 1
-            if value in RIGHT and adjacent.get((idx, idy-1), None) in LEFT:
-                graph_structure[(idx, idy)][(idx, idy-1)] = 1
-            if value in UP and adjacent.get((idx+1, idy), None) in DOWN:
-                graph_structure[(idx, idy)][(idx+1, idy)] = 1
-            if value in DOWN and adjacent.get((idx-1, idy), None) in UP:
-                graph_structure[(idx, idy)][(idx-1, idy)] = 1
+    for idx, idy, value in ((idx, idy, value) for idx, elm_x in enumerate(parsed) for idy, value in enumerate(elm_x)):
+        if value == "S":
+            start = (idx, idy)
+        adjacent = helper.get_neighbours_dict(parsed, idx, idy, cardinal_directions)
+        if value in LEFT and adjacent.get((idx, idy + 1), None) in RIGHT:
+            graph_structure[(idx, idy)][(idx, idy + 1)] = 1
+        if value in RIGHT and adjacent.get((idx, idy - 1), None) in LEFT:
+            graph_structure[(idx, idy)][(idx, idy - 1)] = 1
+        if value in UP and adjacent.get((idx + 1, idy), None) in DOWN:
+            graph_structure[(idx, idy)][(idx + 1, idy)] = 1
+        if value in DOWN and adjacent.get((idx - 1, idy), None) in UP:
+            graph_structure[(idx, idy)][(idx - 1, idy)] = 1
     dijk = DijkstraGraph(graph_structure)
     return dijk, start
 
