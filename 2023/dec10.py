@@ -12,7 +12,7 @@ DOWN = ["|", "L", "J", "S"]
 UP = ["|", "7", "F", "S"]
 
 
-def question_1(parsed: list[list[str]]) -> int:
+def get_dijkstra_graph(parsed: list[list[str]]) -> tuple[DijkstraGraph, tuple[int, int]]:
     graph_structure = defaultdict(dict)
     start = None
     for idx, elm_x in enumerate(parsed):
@@ -53,6 +53,11 @@ def question_1(parsed: list[list[str]]) -> int:
                 if adjacent.get((idx+1, idy), None) in DOWN:
                     graph_structure[(idx, idy)][(idx+1, idy)] = 1
     dijk = DijkstraGraph(graph_structure)
+    return dijk, start
+
+
+def question_1(parsed: list[list[str]]) -> int:
+    dijk, start = get_dijkstra_graph(parsed)
     possible_lengths = {k: v for k, v in dijk.dijkstra(start).items() if v != float("inf")}
     result = max(possible_lengths.values())
     return result
