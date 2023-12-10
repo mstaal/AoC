@@ -41,19 +41,10 @@ def compute_total_winning(lines: list[tuple[str, int]], card_ranking: callable) 
     return order_of_strengths
 
 
-def question_1(lines: list[tuple[str, int]]) -> int:
-    return compute_total_winning(lines, value_of_card)
-
-
-@helper.profiler
-def question_2(lines: list[tuple[str, int]]) -> int:
-    return compute_total_winning(lines, value_of_card_j)
-
-
 if __name__ == '__main__':
     content = [(c[0], int(c[1])) for c in [[x for x in c.split(" ")] for c in Path("data/day7.txt").read_text(encoding="UTF-8").split("\n")]]
 
-    question1 = question_1(content)
+    question1 = compute_total_winning(content, value_of_card)
     print(f"Result 1: {str(question1)}")
-    question2 = question_2(content)
+    question2 = compute_total_winning(content, value_of_card_j)
     print(f"Result 2: {str(question2)}")
