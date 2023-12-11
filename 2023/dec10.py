@@ -44,11 +44,11 @@ def question_1(parsed: list[list[str]]) -> tuple[int, DijkstraGraph, tuple[int, 
 
 @helper.profiler
 def question_2(distance: int, dijk: DijkstraGraph, start: tuple[int, int], end: tuple[int, int]) -> int:
-    path = dijk.dijkstra_with_path(start)[end]
+    _, path = dijk.dijkstra_with_path(start)[end]
     parsed_altered = deepcopy(parsed)
     parsed_altered[path[-2][0]][path[-2][1]] = "."
     dijk_alternative, _ = get_dijkstra_graph(parsed_altered)
-    path_alt = dijk_alternative.dijkstra_with_path(start)[end]
+    _, path_alt = dijk_alternative.dijkstra_with_path(start)[end]
     cycle = path + list(reversed(path_alt))
 
     # Pick's theorem: https://en.wikipedia.org/wiki/Pick%27s_theorem

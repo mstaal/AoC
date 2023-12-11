@@ -1,5 +1,6 @@
 import math
 import heapq
+from collections import defaultdict
 
 
 class T(tuple):
@@ -158,6 +159,17 @@ class LinkedList:
         raise Exception("Node with data '%s' not found" % target_node)
 
 
+def backtrack_shortest_path(node_metadata, end):
+    path = [end]
+    current = node_metadata["predecessor"]
+    while current:
+        coor, metadata = current
+        path.append(coor)
+        current = metadata["predecessor"]
+    path.reverse()
+    return path
+
+
 # https://gist.github.com/m00nlight/245d917cb030c515c513
 class DijkstraGraph:
     def __init__(self, graph):
@@ -167,7 +179,7 @@ class DijkstraGraph:
         self.graph[u] = self.graph.get(u, {})
         self.graph[u][v] = weight
 
-    def dijkstra(self, start):
+    def dijkstra(self, start, weight_transform=lambda graph, current, neighbour, weight: weight):
         distance, visited, hq = {}, {}, []
 
         for node in self.graph.keys():
@@ -179,24 +191,26 @@ class DijkstraGraph:
         heapq.heappush(hq, (0, start))
 
         while hq:
-            (min_distance, current_node) = heapq.heappop(hq)
-            visited[current_node] = True
+            (min_distance, current) = heapq.heappop(hq)
+            visited[current] = True
 
-            for neighbour_node, weight in self.graph[current_node].items():
-                new_distance = min_distance + weight
-                if (not visited[neighbour_node]) and (new_distance < distance[neighbour_node]):
-                    distance[neighbour_node] = new_distance
-                    heapq.heappush(hq, (distance[neighbour_node], neighbour_node))
+            for neighbour, weight in self.graph[current].items():
+                new_distance = min_distance + weight_transform(self.graph, current, neighbour, weight)
+                if (not visited[neighbour]) and (new_distance < distance[neighbour]):
+                    distance[neighbour] = new_distance
+                    heapq.heappush(hq, (distance[neighbour], neighbour))
         return distance
 
     def dijkstra_with_path(self, start, weight_transform=lambda graph, current, neighbour, weight: weight):
-        node_metadata, visited, hq = {}, {}, []
+        data, visited, hq = defaultdict(dict), {}, []
 
         for node in self.graph.keys():
-            node_metadata[node] = {"distance": float('inf'), "predecessor": None}
+            data[node]["distance"] = float("inf")
+            data[node]["predecessor"] = None
             visited[node] = False
 
-        node_metadata[start] = {"distance": 0, "predecessor": None}
+        data[start]["distance"] = 0
+        data[start]["predecessor"] = None
         visited[start] = True
         heapq.heappush(hq, (0, start))
 
@@ -206,23 +220,24 @@ class DijkstraGraph:
 
             for neighbour, weight in self.graph[current].items():
                 new_distance = min_distance + weight_transform(self.graph, current, neighbour, weight)
-                if (not visited[neighbour]) and (new_distance < node_metadata[neighbour]["distance"]):
-                    node_metadata[neighbour] = {"distance": new_distance, "predecessor": (current, node_metadata[current])}
-                    heapq.heappush(hq, (node_metadata[neighbour]["distance"], neighbour))
-        return DijkstraGraphResult(node_metadata)
+                if (not visited[neighbour]) and (new_distance < data[neighbour]["distance"]):
+                    data[neighbour]["distance"] = new_distance
+                    data[neighbour]["predecessor"] = (current, data[current])
+                    heapq.heappush(hq, (data[neighbour]["distance"], neighbour))
+        return DijkstraGraphResult(data)
 
 
 class DijkstraGraphResult:
-    def __init__(self, graph: dict):
-        self.graph = graph
+    def __init__(self, data: dict):
+        self.data = data
 
-    def __getitem__(self, end):
-        node_metadata = self.graph[end]
+    def __getitem__(self, end) -> tuple[int, list[tuple[int, int]]]:
+        node = self.data[end]
         path = [end]
-        current = node_metadata["predecessor"]
+        current = node["predecessor"]
         while current:
             coor, metadata = current
             path.append(coor)
             current = metadata["predecessor"]
         path.reverse()
-        return path
+        return node["distance"], path
