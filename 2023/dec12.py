@@ -20,14 +20,14 @@ def parse_input(parsed):
 
 def determine_combinations(text, numbers):
     groups = [m.span()[0] for m in re.compile(r"\?").finditer(text)]
-    replacements = [text]
+    repls = [text]
     for group in groups:
-        replacements = [itm for t in replacements for itm in (t[:group] + "#" + t[group+1:], t[:group] + "." + t[group+1:])]
-    replacements = [t for t in replacements if t.count("#") == sum(numbers)]
-    replacements_split = [(idx, [len(e) for e in t.split(".") if e != ""]) for idx, t in enumerate(replacements)]
-    replacements_split = [idx for idx, t in replacements_split if t == numbers]
-    replacements = [replacements[idx] for idx in replacements_split]
-    return replacements
+        repls = [itm for t in repls for itm in (t[:group] + "#" + t[group+1:], t[:group] + "." + t[group+1:])]
+    repls = [t for t in repls if t.count("#") == sum(numbers)]
+    repls_split = [(idx, [len(e) for e in t.split(".") if e != ""]) for idx, t in enumerate(repls)]
+    repls_split = [idx for idx, t in repls_split if t == numbers]
+    repls = [repls[idx] for idx in repls_split]
+    return repls
 
 
 @helper.profiler
