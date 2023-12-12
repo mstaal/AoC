@@ -18,7 +18,7 @@ def parse_input(parsed):
     return parts
 
 
-def count_combinations(text, numbers):
+def determine_combinations(text, numbers):
     groups = [m.span()[0] for m in re.compile(r"\?").finditer(text)]
     replacements = [text]
     tmp = []
@@ -39,7 +39,7 @@ def count_combinations(text, numbers):
 
 @helper.profiler
 def question_1(digested) -> int:
-    combs = [count_combinations(text, numbers) for text, numbers in digested]
+    combs = [determine_combinations(text, numbers) for text, numbers in digested]
     total = sum([len(comb) for comb in combs])
     return total
 
