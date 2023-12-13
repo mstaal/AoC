@@ -10,19 +10,12 @@ def parse_input(parsed):
 
 def search(lst):
     results = set()
-    for idx in range(len(lst) - 1):
-        current_row = lst[idx]
-        next_row = lst[idx + 1]
-        if current_row == next_row:
-            if all(lst[idx - i] == lst[idx + 1 + i] for i in range(1, min(idx + 1, len(lst) - idx - 1))):
-                results.add(("row", idx))
-    for idx in range(len(lst[0]) - 1):
-        current_column = "".join([e[idx] for e in lst])
-        next_column = "".join([e[idx + 1] for idy, e in enumerate(lst)])
-        if current_column == next_column:
-            if all([e[idx - i] for e in lst] == [e[idx + 1 + i] for e in lst] for i in
-                   range(1, min(idx + 1, len(lst[0]) - idx - 1))):
-                results.add(("column", idx))
+    for idx in range(len(lst)-1):
+        if all(lst[idx-i] == lst[idx+1+i] for i in range(0, min(idx+1, len(lst)-idx-1))):
+            results.add(("row", idx))
+    for idy in range(len(lst[0])-1):
+        if all([e[idy-i] for e in lst] == [e[idy+1+i] for e in lst] for i in range(0, min(idy+1, len(lst[0])-idy-1))):
+            results.add(("column", idy))
     return results
 
 
