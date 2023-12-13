@@ -34,7 +34,7 @@ def question_2(parsed) -> int:
     for idx, text in enumerate(parsed):
         for idc, char in enumerate(text):
             new_char = "." if char == "#" else ("#" if char == "." else char)
-            new_search = search((text[:idc] + new_char + text[idc+1:]).split("\n")).difference({old_calcs[idx]})
+            new_search = search(f"{text[:idc]}{new_char}{text[idc+1:]}".split("\n")).difference({old_calcs[idx]})
             if new_search:
                 calcs.append(next(iter(new_search)))
                 break
