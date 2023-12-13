@@ -2,7 +2,6 @@ from utils import aoc_helper as helper
 from pathlib import Path
 
 
-
 def parse_input(parsed):
     parts = [line.split(" ") for line in parsed]
     parts = [(part[0], [int(e) for e in part[1].split(",")]) for part in parts]
@@ -44,7 +43,7 @@ def question_2(parsed) -> int:
             new_char = "." if char == "#" else ("#" if char == "." else char)
             new_search = search((text[:idc] + new_char + text[idc+1:]).split("\n")).difference({old_calcs[idx]})
             if new_search:
-                calcs.append(list(new_search)[0])
+                calcs.append(next(iter(new_search)))
                 break
     total = sum(e + 1 if t == "column" else 100 * (e + 1) for t, e in calcs)
     return total
