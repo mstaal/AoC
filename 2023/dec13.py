@@ -1,7 +1,5 @@
 from utils import aoc_helper as helper
 from pathlib import Path
-import re
-from functools import cache, lru_cache
 
 
 
@@ -11,37 +9,50 @@ def parse_input(parsed):
     return parts
 
 
-def calculate(lst):
-    for idx in range(len(lst)-1):
+def search(lst):
+    results = set()
+    for idx in range(len(lst) - 1):
         current_row = lst[idx]
-        next_row = lst[idx+1]
+        next_row = lst[idx + 1]
         if current_row == next_row:
-            if all(lst[idx-i] == lst[idx+1+i] for i in range(1, min(idx+1, len(lst)-idx-1))):
-                return ("row", idx)
-    for idx in range(len(lst[0])-1):
+            if all(lst[idx - i] == lst[idx + 1 + i] for i in range(1, min(idx + 1, len(lst) - idx - 1))):
+                results.add(("row", idx))
+    for idx in range(len(lst[0]) - 1):
         current_column = "".join([e[idx] for e in lst])
-        next_column = "".join([e[idx+1] for idy, e in enumerate(lst)])
+        next_column = "".join([e[idx + 1] for idy, e in enumerate(lst)])
         if current_column == next_column:
-            if all([e[idx-i] for e in lst] == [e[idx+1+i] for e in lst] for i in range(1, min(idx+1, len(lst[0])-idx-1))):
-                return ("column", idx)
+            if all([e[idx - i] for e in lst] == [e[idx + 1 + i] for e in lst] for i in
+                   range(1, min(idx + 1, len(lst[0]) - idx - 1))):
+                results.add(("column", idx))
+    return results
 
 
 @helper.profiler
-def question_1(parsed) -> int:
-    calcs = [calculate(el) for el in parsed]
-    hej = ""
+def question_1(parsed) -> tuple[int, list[tuple[str, int]]]:
+    splitted = [e.split("\n") for e in parsed]
+    calcs = [itm for lst in splitted for itm in search(lst)]
     total = sum(e+1 if t == "column" else 100*(e+1) for t, e in calcs)
-    return total
+    return total, calcs
 
 
 @helper.profiler
 def question_2(parsed) -> int:
-    return 2
+    _, old_calcs = question_1(parsed)
+    calcs = []
+    for idx, text in enumerate(parsed):
+        for idc, char in enumerate(text):
+            new_char = "." if char == "#" else ("#" if char == "." else char)
+            new_search = search((text[:idc] + new_char + text[idc+1:]).split("\n")).difference({old_calcs[idx]})
+            if new_search:
+                calcs.append(list(new_search)[0])
+                break
+    total = sum(e + 1 if t == "column" else 100 * (e + 1) for t, e in calcs)
+    return total
 
 
 if __name__ == '__main__':
-    parsed = [e.split("\n") for e in Path("data/day13.txt").read_text(encoding="UTF-8").split("\n\n")]
-    q1 = question_1(parsed)
+    parsed = Path("data/day13.txt").read_text(encoding="UTF-8").split("\n\n")
+    q1, _ = question_1(parsed)
     print(f"Result 1: {str(q1)}")
-    q2 = question_2(digested)
+    q2 = question_2(parsed)
     print(f"Result 2: {str(q2)}")
