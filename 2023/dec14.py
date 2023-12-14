@@ -64,8 +64,9 @@ def question_1(p) -> int:
 
 def detect_cycle(history: list) -> tuple[int, int]:
     value_count = Counter(history)
+    # By lucky coincidence an element only appears twice if it's in a cycle... :-)
     loop_values = [k for k, v in value_count.items() if v > 1]
-    beginning, end = loop_values[0], loop_values[-1]
+    beginning = loop_values[0]
     beginning_indices = [idx for idx, elm in enumerate(history) if elm == beginning]
     beginning_idx, end_idx = -1, -1,
     for current, upcoming in helper.pairwise(beginning_indices):
