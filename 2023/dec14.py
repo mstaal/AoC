@@ -73,12 +73,10 @@ def detect_cycle(history: list) -> tuple[int, int]:
         if upcoming != current+1:
             beginning_idx = upcoming
             break
-    for elm in beginning_indices:
-        if elm <= beginning_idx:
-            continue
-            # Check that they agree on enough elements... :-) (30 is a magic number)
-        if history[beginning_idx:beginning_idx+30] == history[elm:elm+30]:
-            period = elm-beginning_idx
+    for idx in [i for i in beginning_indices if i > beginning_idx]:
+        # Check that they agree on enough elements... :-) (30 is a magic number)
+        if history[beginning_idx:beginning_idx+len(history[idx:-1])] == history[idx:-1]:
+            period = idx-beginning_idx
             break
     return beginning_idx, period
 
