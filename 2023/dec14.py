@@ -68,7 +68,7 @@ def detect_cycle(history: list) -> tuple[int, int]:
     loop_values = [k for k, v in value_count.items() if v > 1]
     beginning = loop_values[0]
     beginning_indices = [idx for idx, elm in enumerate(history) if elm == beginning]
-    beginning_idx, end_idx = -1, -1,
+    beginning_idx, period = -1, -1,
     for current, upcoming in helper.pairwise(beginning_indices):
         if upcoming != current+1:
             beginning_idx = upcoming
@@ -78,9 +78,9 @@ def detect_cycle(history: list) -> tuple[int, int]:
             continue
             # Check that they agree on enough elements... :-) (30 is a magic number)
         if history[beginning_idx:beginning_idx+30] == history[elm:elm+30]:
-            end_idx = elm-1
+            period = elm-beginning_idx
             break
-    return beginning_idx, end_idx
+    return beginning_idx, period
 
 
 @helper.profiler
@@ -91,8 +91,7 @@ def question_2(p) -> int:
     for _ in range(200):
         row_rep, val = do_cycle(row_rep)
         load_value_history.append(val)
-    beginning_idx, end_idx = detect_cycle(load_value_history)
-    period = end_idx+1-beginning_idx
+    beginning_idx, period = detect_cycle(load_value_history)
     value_of_interest = load_value_history[beginning_idx+((1000000000-beginning_idx) % period)-1]
     return value_of_interest
 
