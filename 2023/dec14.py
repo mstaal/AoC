@@ -98,7 +98,6 @@ def question_2(p) -> int:
 
 if __name__ == '__main__':
     parsed = Path("data/day14.txt").read_text(encoding="UTF-8").split("\n")
-    columnss = reverse_row_columns(reverse_row_columns(parsed))
     q1 = question_1(parsed)
     print(f"Result 1: {str(q1)}")
     q2 = question_2(parsed)
