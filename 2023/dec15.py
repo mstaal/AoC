@@ -1,13 +1,14 @@
 from collections import defaultdict
 from utils import aoc_helper as helper
 from pathlib import Path
+from functools import cache
 
 
+@cache
 def hasher(element):
     current_value = 0
-    ascii_values = [ord(e) for e in element]
-    for idx, val in enumerate(ascii_values):
-        current_value = ((current_value + val) * 17) % 256
+    for ascii_code in (ord(e) for e in element):
+        current_value = ((current_value + ascii_code) * 17) % 256
     return current_value
 
 
@@ -18,16 +19,16 @@ def question_1(p) -> int:
 
 @helper.profiler
 def question_2(p) -> int:
-    cache = defaultdict(dict)
+    boxes = defaultdict(dict)
     for idx, elm_x in enumerate(p):
         if "=" in elm_x:
             label, focal_length = elm_x.split("=")
-            cache[hasher(label)][label] = int(focal_length)
+            boxes[hasher(label)][label] = int(focal_length)
         if "-" in elm_x:
             label = elm_x[:-1]
-            if hasher(label) in cache and label in cache[hasher(label)]:
-                del cache[hasher(label)][label]
-    return sum((box+1)*(slot+1)*length for box in cache.keys() for slot, length in enumerate(cache[box].values()))
+            if hasher(label) in boxes and label in boxes[hasher(label)]:
+                del boxes[hasher(label)][label]
+    return sum((box+1)*(slot+1)*length for box in boxes.keys() for slot, length in enumerate(boxes[box].values()))
 
 
 if __name__ == '__main__':
