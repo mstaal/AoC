@@ -13,8 +13,7 @@ def hasher(element):
 
 @helper.profiler
 def question_1(p) -> int:
-    total = sum([hasher(e) for e in p])
-    return total
+    return sum(hasher(e) for e in p)
 
 
 @helper.profiler
@@ -23,16 +22,12 @@ def question_2(p) -> int:
     for idx, elm_x in enumerate(p):
         if "=" in elm_x:
             label, focal_length = elm_x.split("=")
-            cache[hasher(label)][label] = focal_length
+            cache[hasher(label)][label] = int(focal_length)
         if "-" in elm_x:
             label = elm_x[:-1]
             if hasher(label) in cache and label in cache[hasher(label)]:
                 del cache[hasher(label)][label]
-    total = 0
-    for box_no in cache.keys():
-        for slot_number, focal_length in enumerate(cache[box_no].values()):
-            total += (box_no + 1) * (slot_number + 1) * int(focal_length)
-    return total
+    return sum((box+1)*(slot+1)*length for box in cache.keys() for slot, length in enumerate(cache[box].values()))
 
 
 if __name__ == '__main__':
