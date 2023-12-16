@@ -29,7 +29,8 @@ class CustomQueue:
         return bool(self.queue)
 
 
-def question_1(input_lst, start, direction, energized) -> int:
+def question_1(input_lst, start, direction) -> int:
+    energized = set()
     queue = CustomQueue([(start, direction)])
     while queue:
         current, direction = queue.pop()
@@ -80,17 +81,17 @@ def question_1(input_lst, start, direction, energized) -> int:
 
 @helper.profiler
 def question_2(input_lst) -> int:
-    top_runs = [question_1(input_lst, T(x, -1), DOWN, set()) for x in range(0, len(input_lst[0]))]
-    bottom_runs = [question_1(input_lst, T(x, -1), UP, set()) for x in range(0, len(input_lst[0]))]
-    right_runs = [question_1(input_lst, T(len(input_lst[0]), y), LEFT, set()) for y in range(0, len(input_lst))]
-    left_runs = [question_1(input_lst, T(-1, y), RIGHT, set()) for y in range(0, len(input_lst))]
+    top_runs = [question_1(input_lst, T(x, -1), DOWN) for x in range(0, len(input_lst[0]))]
+    bottom_runs = [question_1(input_lst, T(x, -1), UP) for x in range(0, len(input_lst[0]))]
+    right_runs = [question_1(input_lst, T(len(input_lst[0]), y), LEFT) for y in range(0, len(input_lst))]
+    left_runs = [question_1(input_lst, T(-1, y), RIGHT) for y in range(0, len(input_lst))]
     result = max(top_runs + bottom_runs + right_runs + left_runs)
     return result
 
 
 if __name__ == '__main__':
     parsed = Path("data/day16.txt").read_text(encoding="UTF-8").split("\n")
-    q1 = question_1(parsed, LEFT, RIGHT, set())
+    q1 = question_1(parsed, LEFT, RIGHT)
     print(f"Result 1: {str(q1)}")
     q2 = question_2(parsed)
     print(f"Result 2: {str(q2)}")
