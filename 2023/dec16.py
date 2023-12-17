@@ -40,7 +40,7 @@ def question_1(input_lst, start, direction) -> int:
             continue
         if current not in energized:
             energized.add(current)
-        element = input_lst[current[1]][current[0]]
+        element = input_lst[y_current][x_current]
         if element == ".":
             queue.append((current, direction))
         if element == "/":
