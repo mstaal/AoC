@@ -11,12 +11,16 @@ class T(tuple):
         return T(*(sum(x) for x in zip(self, other)))
 
     def __mul__(self, other):
-        if isinstance(other, int):
+        if isinstance(other, int) or isinstance(other, float):
             return T(tuple(other * i for i in self))
+        if isinstance(other, T):
+            return sum(x * y for x, y in zip(self, other))
 
     def __rmul__(self, other):
-        if isinstance(other, int):
+        if isinstance(other, int) or isinstance(other, float):
             return T(tuple(other * i for i in self))
+        if isinstance(other, T):
+            return sum(x * y for x, y in zip(self, other))
 
     def __sub__(self, other):
         return self.__add__(-i for i in other)
@@ -223,7 +227,7 @@ class DijkstraGraph:
                 if (not visited[neighbour]) and (new_distance < data[neighbour]["distance"]):
                     data[neighbour]["distance"] = new_distance
                     data[neighbour]["predecessor"] = (current, data[current])
-                    heapq.heappush(hq, (data[neighbour]["distance"], neighbour))
+                    heapq.heappush(hq, (new_distance, neighbour))
         return DijkstraGraphResult(data)
 
 
