@@ -61,7 +61,7 @@ def question_2(input_lst) -> int:
 
 if __name__ == '__main__':
     parsed = [[int(i) for i in e] for e in Path("data/day17.txt").read_text(encoding="UTF-8").split("\n")]
-    #q1 = question_1(parsed, 1, 3)
-    #print(f"Result 1: {str(q1)}")
+    q1 = question_1(parsed, 1, 3)
+    print(f"Result 1: {str(q1)}")
     q2 = question_2(parsed)
     print(f"Result 2: {str(q2)}")
