@@ -12,13 +12,13 @@ class T(tuple):
 
     def __mul__(self, other):
         if isinstance(other, int) or isinstance(other, float):
-            return T(tuple(other * i for i in self))
+            return T(*tuple(other * i for i in self))
         if isinstance(other, T):
             return sum(x * y for x, y in zip(self, other))
 
     def __rmul__(self, other):
         if isinstance(other, int) or isinstance(other, float):
-            return T(tuple(other * i for i in self))
+            return T(*tuple(other * i for i in self))
         if isinstance(other, T):
             return sum(x * y for x, y in zip(self, other))
 
@@ -183,29 +183,28 @@ class DijkstraGraph:
         self.graph[u] = self.graph.get(u, {})
         self.graph[u][v] = weight
 
-    def dijkstra(self, start, weight_transform=lambda graph, current, neighbour, weight: weight):
-        distance, visited, hq = {}, {}, []
+    def dijkstra(self, source, target=None, weight_transform=lambda graph, distance, current, neighbour, weight: weight):
+        distance, hq = {}, []
 
         for node in self.graph.keys():
             distance[node] = float('inf')
-            visited[node] = False
 
-        distance[start] = 0
-        visited[start] = True
-        heapq.heappush(hq, (0, start))
+        distance[source] = 0
+        heapq.heappush(hq, (0, source))
 
         while hq:
             (min_distance, current) = heapq.heappop(hq)
-            visited[current] = True
+            if target and current == target:
+                return min_distance
 
             for neighbour, weight in self.graph[current].items():
-                new_distance = min_distance + weight_transform(self.graph, current, neighbour, weight)
-                if (not visited[neighbour]) and (new_distance < distance[neighbour]):
+                new_distance = min_distance + weight_transform(self.graph, distance, current, neighbour, weight)
+                if new_distance < distance[neighbour]:
                     distance[neighbour] = new_distance
                     heapq.heappush(hq, (distance[neighbour], neighbour))
         return distance
 
-    def dijkstra_with_path(self, start, weight_transform=lambda graph, current, neighbour, weight: weight):
+    def dijkstra_with_path(self, source, target=None, weight_transform=lambda graph, data, current, neighbour, weight: weight):
         data, visited, hq = defaultdict(dict), {}, []
 
         for node in self.graph.keys():
@@ -213,17 +212,19 @@ class DijkstraGraph:
             data[node]["predecessor"] = None
             visited[node] = False
 
-        data[start]["distance"] = 0
-        data[start]["predecessor"] = None
-        visited[start] = True
-        heapq.heappush(hq, (0, start))
+        data[source]["distance"] = 0
+        data[source]["predecessor"] = None
+        visited[source] = True
+        heapq.heappush(hq, (0, source))
 
         while hq:
             (min_distance, current) = heapq.heappop(hq)
             visited[current] = True
+            if target and current == target:
+                return min_distance, data[current]
 
             for neighbour, weight in self.graph[current].items():
-                new_distance = min_distance + weight_transform(self.graph, current, neighbour, weight)
+                new_distance = min_distance + weight_transform(self.graph, data, current, neighbour, weight)
                 if (not visited[neighbour]) and (new_distance < data[neighbour]["distance"]):
                     data[neighbour]["distance"] = new_distance
                     data[neighbour]["predecessor"] = (current, data[current])
