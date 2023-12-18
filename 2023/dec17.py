@@ -48,6 +48,7 @@ def question_1(input_lst, min_cap, max_cap) -> int:
                     total_loss = total_loss + input_lst[new_pos_y][new_pos_x]
                     # Even if we are not pushing the start nodes, we still have to increment the total.
                     if i >= min_cap:
+                        # If we have arrived here before in the same direction, we only preserve the optimum.
                         if total_loss < heats.get(new_node, float("inf")):
                             heats[new_node] = total_loss
                             heappush(queue, (total_loss, new_node))
