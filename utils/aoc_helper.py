@@ -3,7 +3,7 @@ import re
 import urllib.parse
 from pathlib import Path
 from typing import Callable
-
+from shapely.geometry import Polygon
 import numpy as np
 import pandas as pd
 from functools import reduce
@@ -16,8 +16,9 @@ def profiler(method):
     def wrapper_method(*arg, **kw):
         t = time()
         result = method(*arg, **kw)
-        print(f"Method '{method.__name__}' took: {round(time()-t, 6)} secs")
+        print(f"Method '{method.__name__}' took: {round(time() - t, 6)} secs")
         return result
+
     return wrapper_method
 
 
@@ -45,7 +46,8 @@ def embed_matrix(matrix, val=0, np_type=np.int64, repeat=1):
 
 
 def linear_2d_operation(points, matrix, as_tuple):
-    if isinstance(points, tuple) or (isinstance(points, list) and len(points) == 2 and all(isinstance(s, int) for s in points)):
+    if isinstance(points, tuple) or (
+            isinstance(points, list) and len(points) == 2 and all(isinstance(s, int) for s in points)):
         result = np.array(points).dot(matrix)
         if as_tuple:
             return tuple(result)
@@ -71,6 +73,7 @@ def reflect_points_y(points, as_tuple=False):
 
 def get_neighbor_rays(r, c, content: list[list], max_radius=None) -> tuple[list, list, list, list]:
     def _condition(i: int): return max_radius is None or i < max_radius
+
     top = [row[c] for i, row in enumerate(content[:r]) if _condition(i)]
     bottom = [row[c] for i, row in enumerate(content[r + 1:]) if _condition(i)]
     left = [col for i, col in enumerate(content[r][:c]) if _condition(i)]
@@ -90,7 +93,8 @@ def get_neighbours_dict(coll, i, j, directions=all_directions, ignore_none=False
     return adjacent_material
 
 
-def get_neighbours_dict_3d(coll, i, j, k, directions=all_directions_3d, ignore_none=False, characters_to_skip=[], radius=1):
+def get_neighbours_dict_3d(coll, i, j, k, directions=all_directions_3d, ignore_none=False, characters_to_skip=[],
+                           radius=1):
     adjacent_material = {}
     for x, y, z in [(x * radius, y * radius, z * radius) for x, y, z in directions]:
         if 0 <= i + x < len(coll) and 0 <= j + y < len(coll[0]) and 0 <= k + z < len(coll[0][0]):
@@ -223,7 +227,6 @@ def wolfram_alpha_query(equation):
 
 
 def parallel(max_workers: int, process_element: Callable, args: list[tuple]):
-
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [executor.submit(process_element, *arg) for arg in args]
         # Wait for all tasks to complete
@@ -237,3 +240,14 @@ def pairwise(iterable: iter):
     a, b = itertools.tee(iterable)
     next(b, None)
     return zip(a, b)
+
+
+def get_polygon_and_properties(exterior_points: list[tuple[int, int]]) -> tuple[Polygon, float, int, int]:
+    polygon = Polygon(exterior_points)
+    number_of_integer_points_on_boundary = polygon.length
+    area = polygon.area
+    # Pick's theorem: https://en.wikipedia.org/wiki/Pick%27s_theorem
+    number_of_integer_points_in_interior = int(area + 1 - number_of_integer_points_on_boundary / 2)
+    # Alternatively: (See: https://www.reddit.com/r/adventofcode/comments/18l0qtr/comment/kdvjfse/?utm_source=share&utm_medium=web2x&context=3)
+    # polygon.buffer(0.5, join_style="mitre").area
+    return polygon, area, number_of_integer_points_on_boundary, number_of_integer_points_in_interior

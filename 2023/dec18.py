@@ -1,6 +1,5 @@
 from utils import aoc_helper as helper
 from pathlib import Path
-from shapely.geometry import Polygon
 
 
 def parse_line(line: list[str]):
@@ -11,14 +10,8 @@ def parse_line(line: list[str]):
 
 
 def compute_lava_from_exterior_points(exterior_points: list[tuple[int, int]]) -> int:
-    polygon = Polygon(exterior_points)
-    boundary_points = polygon.length
-    area = polygon.area
-    # Pick's theorem: https://en.wikipedia.org/wiki/Pick%27s_theorem
-    interior_points = area + 1 - boundary_points/2
-    cubic_meters_of_lava = boundary_points + interior_points
-    # Alternatively: (See: https://www.reddit.com/r/adventofcode/comments/18l0qtr/comment/kdvjfse/?utm_source=share&utm_medium=web2x&context=3)
-    # polygon.buffer(0.5, join_style="mitre").area
+    _, _, no_int_points_on_boundary, no_int_points_in_interior = helper.get_polygon_and_properties(exterior_points)
+    cubic_meters_of_lava = no_int_points_on_boundary + no_int_points_in_interior
     return int(cubic_meters_of_lava)
 
 
