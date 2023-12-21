@@ -1,6 +1,5 @@
 from utils import aoc_helper as helper
 from pathlib import Path
-import numpy as np
 from math import prod
 
 
