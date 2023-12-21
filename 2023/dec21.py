@@ -8,6 +8,7 @@ def get_start(parsed: list[list[str]]) -> tuple[int, int]:
         if value == "S":
             return idx, idy
 
+
 @helper.profiler
 def question_1(input_lst, steps_to_go=64) -> int:
     start = get_start(input_lst)
